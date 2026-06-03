@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>TeleKIA Jabar v2.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --h:#1a6b3c;--h2:#2d9e5f;--h3:#4caf82;--h4:#e8f5ee;
+  --e:#c8973a;--e2:#e8b85a;--krem:#faf6ef;--w:#fff;
+  --dk:#1c2b22;--md:#3d5445;--mt:#5a7a65;
+  --red:#c0392b;--ora:#e67e22;--yel:#d4ac0d;--blu:#2471a3;--pur:#7d3c98;
+  --r:14px;--rs:10px;
+  /* Aliases untuk backward compat */
+  --hijau:#1a6b3c;--hijau2:#2d9e5f;--hijau3:#4caf82;--hijau4:#e8f5ee;
+  --emas:#c8973a;--emas2:#e8b85a;--emas3:#fef9e7;
+  --gelap:#1c2b22;--medium:#3d5445;--muted:#5a7a65;
+  --merah:#c0392b;--oranye:#e67e22;--kuning:#d4ac0d;--biru:#2471a3;--ungu:#7d3c98;
+  --putih:#fff;--abu-gelap:#1c2b22;--abu-medium:#3d5445;--teks:#1c2b22;--teks-muted:#5a7a65;
+  --shadow:0 4px 16px rgba(26,107,60,.1);--shadow2:0 8px 28px rgba(26,107,60,.18);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:#faf6ef;color:#1c2b22;}
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#0d3d20,#1a6b3c,#1f7a45);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-ic{width:40px;height:40px;background:linear-gradient(135deg,#c8973a,#e8b85a);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.logo-tx h1{font-family:'Playfair Display',serif;font-size:18px;color:#fff;font-weight:700;}
+.logo-tx p{font-size:9px;color:rgba(255,255,255,.65);letter-spacing:1px;text-transform:uppercase;}
+.hdr-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:4px 10px;font-size:9px;color:rgba(255,255,255,.9);}
+/* MODE */
+.mode-bar{background:linear-gradient(90deg,#e8f5ee,#fef9e7);border-bottom:2px solid #c5e8d4;padding:7px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.mode-lbl{font-size:10px;color:#3d5445;font-weight:600;}
+.mode-btn{padding:4px 12px;border-radius:16px;font-size:10px;font-weight:600;background:#fff;color:#1a6b3c;border:2px solid #b3d9c2;cursor:pointer;}
+.mode-btn.aktif{background:#1a6b3c;color:#fff;border-color:#1a6b3c;}
+/* TABS */
+.tab-bar{display:flex;overflow-x:auto;background:#fff;border-bottom:2px solid #e0ede5;scrollbar-width:none;}
+.tab-bar::-webkit-scrollbar{display:none;}
+.tab-btn{flex:none;padding:10px 14px;border:none;background:none;font-size:10px;font-weight:500;color:#5a7a65;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;}
+.tab-btn.on{color:#1a6b3c;border-bottom-color:#1a6b3c;font-weight:700;}
+/* CONTENT */
+.page{display:none;padding:16px 14px 40px;max-width:720px;margin:0 auto;}
+.page.on{display:block;}
+/* CARDS */
+.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 4px 16px rgba(26,107,60,.1);border:1px solid rgba(26,107,60,.06);}
+.card-hdr{display:flex;align-items:center;gap:10px;margin-bottom:13px;padding-bottom:10px;border-bottom:2px solid #faf6ef;}
+.cic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.ic-g{background:linear-gradient(135deg,#e8f5ee,#c5e8d4);}
+.ic-r{background:linear-gradient(135deg,#fdecea,#f5c6c0);}
+.ic-b{background:linear-gradient(135deg,#e3f2fd,#b3d9f8);}
+.ic-y{background:linear-gradient(135deg,#fef9e7,#fce5a0);}
+.ic-p{background:linear-gradient(135deg,#f3e5f5,#d7b8e8);}
+.ic-o{background:linear-gradient(135deg,#fff3e0,#ffd194);}
+.ic-t{background:linear-gradient(135deg,#e0f7fa,#80deea);}
+.ctit{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:#1c2b22;}
+.csub{font-size:10px;color:#5a7a65;margin-top:1px;}
+/* FORMS */
+.fg{margin-bottom:11px;}
+.fl{display:block;font-size:11px;font-weight:600;color:#3d5445;margin-bottom:4px;}
+.fi,.fs{width:100%;padding:10px 12px;border:2px solid #e0ede5;border-radius:10px;font-size:13px;color:#1c2b22;background:#f9fdfb;outline:none;font-family:'DM Sans',sans-serif;}
+.fi:focus,.fs:focus{border-color:#4caf82;background:#fff;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+/* BUTTONS */
+.btn{background:linear-gradient(135deg,#1a6b3c,#2d9e5f);color:#fff;border:none;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;width:100%;font-family:'DM Sans',sans-serif;margin-top:4px;}
+.btn:active{opacity:.85;}
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:11px;}
+.chip{background:#e8f5ee;border:1px solid #b3d9c2;border-radius:16px;padding:5px 11px;font-size:11px;font-weight:500;color:#1a6b3c;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.chip.on{background:#1a6b3c;color:#fff;border-color:#1a6b3c;}
+/* RESULTS */
+.rb{border-radius:10px;padding:13px;margin-top:12px;display:none;}
+.rb.show{display:block;}
+.rb-g{background:#eafaf1;border-left:4px solid #27ae60;}
+.rb-y{background:#fefde7;border-left:4px solid #d4ac0d;}
+.rb-o{background:#fef6ec;border-left:4px solid #e67e22;}
+.rb-r{background:#fdecea;border-left:4px solid #c0392b;}
+.rb-b{background:#e8f4fd;border-left:4px solid #2471a3;}
+.rb-p{background:#f5eef8;border-left:4px solid #7d3c98;}
+.rb-t{background:#e0f7fa;border-left:4px solid #0097a7;}
+.rt{font-weight:700;font-size:13px;margin-bottom:5px;}
+.rb-g .rt{color:#1e8449;}.rb-y .rt{color:#9a7d0a;}.rb-o .rt{color:#a04000;}.rb-r .rt{color:#c0392b;}.rb-b .rt{color:#1a5276;}.rb-p .rt{color:#7d3c98;}.rb-t .rt{color:#00838f;}
+.rd{font-size:12px;line-height:1.6;}
+.ra{margin-top:7px;font-size:11px;font-weight:600;color:#3d5445;}
+.ra ul{padding-left:13px;margin-top:3px;}
+.ra li{margin-bottom:2px;line-height:1.5;}
+/* MISC */
+.sd{text-align:center;padding:16px;background:linear-gradient(135deg,#f0faf5,#e8f5ee);border-radius:10px;margin:10px 0;}
+.sdn{font-family:'Playfair Display',serif;font-size:48px;font-weight:900;color:#1a6b3c;line-height:1;}
+.sdl{font-size:11px;color:#5a7a65;margin-top:3px;}
+.ig{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px;}
+.ii{background:#f5faf7;border-radius:10px;padding:10px;border:1px solid #d4eadc;}
+.il{font-size:10px;font-weight:600;color:#5a7a65;text-transform:uppercase;}
+.iv{font-size:13px;font-weight:700;color:#1a6b3c;margin-top:2px;font-family:'DM Mono',monospace;}
+.iv.big{font-size:18px;}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;}
+.tbl th{background:#1a6b3c;color:#fff;padding:7px 8px;text-align:left;}
+.tbl td{padding:7px 8px;border-bottom:1px solid #e0ede5;}
+.tbl tr:nth-child(even) td{background:#f5faf7;}
+.ckl{list-style:none;}
+.ckl li{display:flex;align-items:flex-start;gap:6px;margin-bottom:6px;font-size:12px;line-height:1.5;}
+.ckl li::before{content:'✓';color:#27ae60;font-weight:700;flex-shrink:0;}
+.ckl li.w::before{content:'⚠';color:#e67e22;}
+.ckl li.x::before{content:'✕';color:#c0392b;}
+.alert{background:#fdecea;border:1px solid #f5c6c0;border-radius:10px;padding:10px 12px;display:flex;align-items:flex-start;gap:8px;margin-bottom:11px;}
+.alert p{font-size:12px;color:#7b241c;line-height:1.5;}
+.refbox{background:linear-gradient(135deg,#1a3d1f,#1a6b3c);border-radius:14px;padding:14px;color:#fff;margin-bottom:10px;}
+.refbox h4{font-family:'Playfair Display',serif;font-size:13px;margin-bottom:6px;color:#e8b85a;}
+.refbox p,.refbox li{font-size:12px;opacity:.9;line-height:1.6;}
+.refbox ul{padding-left:13px;}
+.refbox li{margin-bottom:3px;}
+.tl{position:relative;padding-left:20px;}
+.tl::before{content:'';position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,#4caf82,transparent);}
+.tli{position:relative;margin-bottom:13px;}
+.tld{position:absolute;left:-17px;top:3px;width:10px;height:10px;border-radius:50%;background:#1a6b3c;border:2px solid #fff;box-shadow:0 0 0 2px #1a6b3c;}
+.tlc{background:#fff;border-radius:10px;padding:10px 12px;box-shadow:0 2px 8px rgba(0,0,0,.06);border:1px solid #e0ede5;}
+.tlw{font-size:9px;font-weight:700;color:#1a6b3c;text-transform:uppercase;letter-spacing:1px;}
+.tlt{font-size:12px;font-weight:600;color:#1c2b22;margin:2px 0;}
+.tldesc{font-size:11px;color:#5a7a65;line-height:1.5;}
+.prog{margin:7px 0;}
+.prog-wrap{margin:7px 0;}
+.prog-lbl{display:flex;justify-content:space-between;font-size:10px;color:#5a7a65;margin-bottom:3px;}
+.prog-bar{height:7px;background:#e0ede5;border-radius:4px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:4px;}
+.pf-g{background:linear-gradient(90deg,#1a6b3c,#4caf82);}
+.pf-r{background:linear-gradient(90deg,#e74c3c,#c0392b);}
+.pf-o{background:linear-gradient(90deg,#f39c12,#e67e22);}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.mcard{background:#fff;border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;border:2px solid #e0ede5;box-shadow:0 4px 16px rgba(26,107,60,.1);font-family:'DM Sans',sans-serif;}
+.mcard:active{background:#f0faf5;border-color:#4caf82;}
+.mcard .me{font-size:26px;margin-bottom:5px;display:block;}
+.mcard .mn{font-size:11px;font-weight:700;color:#1c2b22;line-height:1.3;}
+.mcard .md{font-size:10px;color:#5a7a65;margin-top:2px;}
+.welcome{background:linear-gradient(135deg,#1a6b3c,#0d3d20);border-radius:14px;padding:18px;color:#fff;margin-bottom:12px;overflow:hidden;}
+.welcome .wtag{font-size:9px;color:#e8b85a;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.welcome h3{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:5px;}
+.welcome p{font-size:12px;opacity:.85;line-height:1.5;}
+.wt{background:linear-gradient(135deg,#1a6b3c,#0d3d20);border-radius:14px;padding:18px;color:#fff;margin-bottom:12px;}
+.wt-title{font-family:'Playfair Display',serif;font-size:17px;margin-bottom:3px;color:#e8b85a;}
+.wt-sub{font-size:11px;opacity:.8;margin-bottom:12px;}
+.wt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+.wt-item{background:rgba(255,255,255,.12);border-radius:8px;padding:9px 5px;text-align:center;}
+.wt-val{font-family:'DM Mono',monospace;font-size:17px;font-weight:700;color:#e8b85a;}
+.wt-lbl{font-size:8px;color:rgba(255,255,255,.7);margin-top:2px;}
+.rh{background:linear-gradient(135deg,#1a6b3c,#0d3d20);border-radius:14px;padding:16px;color:#fff;margin:11px 0;text-align:center;}
+.rh-num{font-family:'Playfair Display',serif;font-size:38px;font-weight:900;color:#e8b85a;}
+.rh-lbl{font-size:11px;color:rgba(255,255,255,.8);margin-top:3px;}
+.rh-sub{font-size:10px;color:rgba(255,255,255,.6);margin-top:2px;}
+.dev-card{background:#fff;border-radius:10px;padding:11px;margin-bottom:7px;border-left:4px solid #4caf82;box-shadow:0 2px 6px rgba(0,0,0,.05);}
+.dev-age{font-size:9px;font-weight:700;color:#1a6b3c;text-transform:uppercase;letter-spacing:.5px;}
+.dev-list{font-size:11px;color:#3d5445;line-height:1.6;margin-top:3px;}
+.stit{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#1c2b22;margin-bottom:2px;}
+.ssub{font-size:11px;color:#5a7a65;margin-bottom:12px;}
+.div{height:1px;background:linear-gradient(90deg,transparent,#c5e8d4,transparent);margin:12px 0;}
+footer{background:#1c2b22;padding:20px;text-align:center;}
+footer p{color:rgba(255,255,255,.45);font-size:10px;line-height:1.8;}
+footer strong{color:#e8b85a;}
+body.mode-kader .bidan-only,body.mode-keluarga .bidan-only{display:none!important;}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="logo">
+    <div class="logo-ic">🏥</div>
+    <div class="logo-tx">
+      <h1>TeleKIA Jabar</h1>
+      <p>Platform Telemidwifery Terpadu</p>
+    </div>
+  </div>
+  <div class="hdr-badge">🌿 v2.0 Offline</div>
+</header>
+
+<div class="mode-bar">
+  <span class="mode-lbl">👤 Saya:</span>
+  <button class="mode-btn aktif" onclick="setMode('bidan',this)">👩‍⚕️ Bidan/Nakes</button>
+  <button class="mode-btn" onclick="setMode('kader',this)">🤝 Kader</button>
+  <button class="mode-btn" onclick="setMode('keluarga',this)">👨‍👩‍👧 Keluarga</button>
+</div>
+
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn on" onclick="gotoTab('beranda',this)">🏠 Beranda</button>
+  <button class="tab-btn" onclick="gotoTab('anc',this)">🤰 Kehamilan</button>
+  <button class="tab-btn" onclick="gotoTab('preek',this)">💉 Preeklampsia</button>
+  <button class="tab-btn" onclick="gotoTab('stunting',this)">📏 Stunting</button>
+  <button class="tab-btn" onclick="gotoTab('anak',this)">👶 Tumbuh Kembang</button>
+  <button class="tab-btn" onclick="gotoTab('gizi',this)">🥗 Gizi</button>
+  <button class="tab-btn" onclick="gotoTab('kb',this)">💊 KB</button>
+  <button class="tab-btn" onclick="gotoTab('kegawatan',this)">🚨 Kegawatan</button>
+  <button class="tab-btn" onclick="gotoTab('referensi',this)">📚 Referensi</button>
+</div>
+
+<div id="beranda" class="page on">
+<div class="welcome">
+    <div class="wtag">TeleKIA Jabar · From Ideas to Impact</div>
+    <h3>Selamat Datang! 🌿</h3>
+    <p>Platform ini bisa digunakan oleh <strong>siapa saja</strong> — bidan, kader posyandu, ibu hamil, dan keluarga — untuk deteksi dini, pemantauan kesehatan, dan panduan praktis KIA.</p>
+  </div>
+
+  <div style="background:#fdecea;border-radius:var(--rs);padding:10px 13px;display:flex;gap:9px;margin-bottom:13px;">
+    <span style="font-size:18px">🚨</span>
+    <p style="font-size:12px;color:#7b241c;line-height:1.5"><strong>AKI Jabar 2024: 524 kematian ibu</strong> — Deteksi dini dan rujukan tepat waktu menyelamatkan nyawa.</p>
+  </div>
+
+  <p class="stit">Menu Utama</p>
+  <p class="ssub">Pilih modul yang Anda butuhkan</p>
+
+    <div class="mgrid">
+    <button class="mcard" onclick="gotoTab('anc',this)"><span class="me">🤰</span><div class="mn">Kehamilan & ANC</div><div class="md">Usia hamil, risiko, 12T</div></button>
+    <button class="mcard" onclick="gotoTab('preek',this)"><span class="me">💉</span><div class="mn">Preeklampsia</div><div class="md">Deteksi & tata laksana</div></button>
+    <button class="mcard" onclick="gotoTab('stunting',this)"><span class="me">📏</span><div class="mn">Stunting</div><div class="md">Skrining stunting balita</div></button>
+    <button class="mcard" onclick="gotoTab('anak',this)"><span class="me">👶</span><div class="mn">Tumbuh Kembang</div><div class="md">Usia anak & milestone</div></button>
+    <button class="mcard" onclick="gotoTab('gizi',this)"><span class="me">🥗</span><div class="mn">Gizi Ibu & Menyusui</div><div class="md">Nutrisi & anemia</div></button>
+    <button class="mcard" onclick="gotoTab('kb',this)"><span class="me">💊</span><div class="mn">Keluarga Berencana</div><div class="md">Rekomendasi KB</div></button>
+    <button class="mcard" onclick="gotoTab('kegawatan',this)"><span class="me">🚨</span><div class="mn">Kegawatan Obstetri</div><div class="md">PPH, eklampsia, sepsis</div></button>
+    <button class="mcard" onclick="gotoTab('referensi',this)"><span class="me">📚</span><div class="mn">Referensi Klinis</div><div class="md">Panduan EBM & hukum</div></button>
+    </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-b">📊</div><div><div class="ctit">Situasi KIA Jawa Barat</div><div class="csub">Data Dinkes Jabar & Kemenkes 2024</div></div></div>
+    <div class="prog-wrap"><div class="prog-lbl"><span>AKI Jabar</span><span>524 kasus (target &lt;300)</span></div><div class="prog-bar"><div class="prog-fill pf-r" style="width:72%"></div></div></div>
+    <div class="prog-wrap"><div class="prog-lbl"><span>Stunting Jabar</span><span>24.5% (target &lt;14%)</span></div><div class="prog-bar"><div class="prog-fill pf-o" style="width:55%"></div></div></div>
+    <div class="prog-wrap"><div class="prog-lbl"><span>Cakupan K6 ANC</span><span>78.2%</span></div><div class="prog-bar"><div class="prog-fill pf-g" style="width:78%"></div></div></div>
+    <div class="prog-wrap"><div class="prog-lbl"><span>Persalinan di Faskes</span><span>92.1%</span></div><div class="prog-bar"><div class="prog-fill pf-g" style="width:92%"></div></div></div>
+  </div>
+
+  <div class="card" style="background:linear-gradient(135deg,#1a3d1f,#1a6b3c);">
+    <div style="font-size:10px;font-weight:700;color:#e8b85a;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;">👥 Tim Pengembang TeleKIA Jabar</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:10px;">
+        <div style="font-size:11px;font-weight:700;color:#e8b85a;">👩‍⚕️ Ernawati, S.ST., Bdn., M.Kes.</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.7);margin-top:2px;">Ketua · Dosen Profesi Bidan</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.5);">FIKK INKes KHG Garut</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:10px;">
+        <div style="font-size:11px;font-weight:700;color:#85c1e9;">👨‍⚕️ dr. Ziyad Fadlullah</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.7);margin-top:2px;">Dokter Fungsional</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.5);">Puskesmas Cihurip, Garut</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:10px;">
+        <div style="font-size:11px;font-weight:700;color:#80deea;">🩺 Ners. Faza Fauzan A.A., S.Kep</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.7);margin-top:2px;">Perawat Komunitas</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.5);">Garut</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:10px;">
+        <div style="font-size:11px;font-weight:700;color:#d7bde2;">💊 Muhammad Azzam, Amd.Farm</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.7);margin-top:2px;">Asisten Apoteker</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.5);">RS Guntur, Garut</div>
+      </div>
+    </div>
+    <div style="background:rgba(200,151,58,.2);border-radius:10px;padding:10px;margin-top:8px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:18px;">🌸</span>
+      <div>
+        <div style="font-size:11px;font-weight:700;color:#e8b85a;">Putri Zulfa Anjelika Mentari, S.Keb</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.7);">Pengembang Platform · INKes KHG Garut</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div id="anc" class="page">
+<p class="stit">Kehamilan & ANC</p>
+  <p class="ssub">Kalkulator kehamilan & skrining risiko — untuk semua pengguna</p>
+
+  <!-- KALKULATOR USIA KEHAMILAN HPHT -->
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-g">📅</div><div><div class="ctit">Kalkulator Usia Kehamilan</div><div class="csub">Otomatis dari HPHT — Real-time</div></div></div>
+    <div class="fg">
+      <label class="fl">Hari Pertama Haid Terakhir (HPHT)</label>
+      <input type="date" class="fi" id="hpht-tgl" onchange="hitungHPHT()">
+    </div>
+    <div id="result-hpht" class="rb"></div>
+    <div id="week-tracker" style="display:none" class="wt">
+      <div class="wt-title" id="wt-judul"></div>
+      <div class="wt-sub" id="wt-sub"></div>
+      <div class="wt-grid">
+        <div class="wt-item"><div class="wt-val" id="wt-minggu">—</div><div class="wt-lbl">Minggu</div></div>
+        <div class="wt-item"><div class="wt-val" id="wt-hari">—</div><div class="wt-lbl">Hari ke-</div></div>
+        <div class="wt-item"><div class="wt-val" id="wt-hpl">—</div><div class="wt-lbl">HPL (Est.)</div></div>
+        <div class="wt-item"><div class="wt-val" id="wt-sisa">—</div><div class="wt-lbl">Hari Menuju HPL</div></div>
+      </div>
+      <div id="wt-info" style="margin-top:12px;font-size:12px;color:rgba(255,255,255,.85);line-height:1.6;"></div>
+    </div>
+  </div>
+
+  <!-- TFU & TBBJ -->
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-y">📐</div><div><div class="ctit">TFU & Taksiran Berat Badan Janin</div><div class="csub">Rumus Johnson-Toshach & Dare</div></div></div>
+    <div class="fr">
+      <div class="fg">
+        <label class="fl">TFU / Tinggi Fundus Uteri (cm)</label>
+        <input type="number" class="fi" id="tfu-nilai" placeholder="28" step="0.5">
+      </div>
+      <div class="fg">
+        <label class="fl">Lingkar Perut (cm)</label>
+        <input type="number" class="fi" id="lp-nilai" placeholder="85" step="0.5">
+      </div>
+    </div>
+    <div class="fr">
+      <div class="fg">
+        <label class="fl">Presentasi Janin</label>
+        <select class="fs" id="tfu-presentasi">
+          <option value="kepala-masuk">Kepala sudah masuk PAP</option>
+          <option value="kepala-belum">Kepala belum masuk PAP</option>
+          <option value="sungsang">Sungsang / Lintang</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">Usia Kehamilan (minggu)</label>
+        <input type="number" class="fi" id="tfu-uk" placeholder="36" min="20" max="42">
+      </div>
+    </div>
+    <button class="btn" onclick="hitungTBBJ()">📐 Hitung TBBJ</button>
+    <div id="result-tbbj" class="rb"></div>
+  </div>
+
+  <!-- SKOR POEDJI ROCHJATI -->
+  <div class="card bidan-only">
+    <div class="card-hdr"><div class="cic ic-r">⚠️</div><div><div class="ctit">Skor Risiko Kehamilan</div><div class="csub">Poedji Rochjati — untuk Bidan & Kader Terlatih</div></div></div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Umur (tahun)</label><input type="number" class="fi" id="pr-umur" placeholder="25"></div>
+      <div class="fg"><label class="fl">Gravida ke-</label><input type="number" class="fi" id="pr-gravida" placeholder="1" min="1"></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Tinggi Badan (cm)</label><input type="number" class="fi" id="pr-tb" placeholder="155"></div>
+      <div class="fg"><label class="fl">UK (minggu)</label><input type="number" class="fi" id="pr-uk" placeholder="20"></div>
+    </div>
+    <p style="font-size:11px;font-weight:700;color:var(--medium);margin-bottom:8px;margin-top:4px">Faktor Risiko (centang jika ada):</p>
+    <div id="pr-checks" style="font-size:12px;">
+      <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;cursor:pointer"><input type="checkbox" class="pr-cb" data-val="4" style="width:15px;height:15px"> Primigravida ≤16 tahun (+4)</label>
+      <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;cursor:pointer"><input type="checkbox" class="pr-cb" data-val="4" style="width:15px;height:15px"> Primigravida ≥35 tahun (+4)</label>
+      <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;cursor:pointer"><input type="checkbox" class="pr-cb" data-val="4" style="width:15px;height:15px"> Grande multipara ≥4 anak (+4)</label>
+      <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;cursor:pointer"><input type="checkbox" class="pr-cb" data-val="4" style="width:15px;height:15px"> Jarak kehamilan &lt;2 tahun (+4)</label>
+      <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;cursor:pointer"><input type="checkbox" class="pr-cb" data-val="4" style="width:15px;height:15px"> TB ≤145 cm (+4)</label>
+      <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;cursor:pointer"><input type="checkbox" class="pr-cb" data-val="8" style="width:15px;height:15px"> Panggul sempit / CPD (+8)</label>
+      <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;cursor:pointer"><input type="checkbox" class="pr-cb" data-val="8" style="width:15px;height:15px"> Riwayat SC / operasi uterus (+8)</label>
+      <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;cursor:pointer"><input type="checkbox" class="pr-cb" data-val="4" style="width:15px;height:15px"> Riwayat preeklampsia (+4)</label>
+      <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;cursor:pointer"><input type="checkbox" class="pr-cb" data-val="4" style="width:15px;height:15px"> Kehamilan kembar (+4)</label>
+      <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;cursor:pointer"><input type="checkbox" class="pr-cb" data-val="4" style="width:15px;height:15px"> Hb &lt;8 g/dL / anemia berat (+4)</label>
+      <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;cursor:pointer"><input type="checkbox" class="pr-cb" data-val="4" style="width:15px;height:15px"> Diabetes / penyakit kronik (+4)</label>
+      <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;cursor:pointer"><input type="checkbox" class="pr-cb" data-val="8" style="width:15px;height:15px"> Letak sungsang / lintang (+8)</label>
+    </div>
+    <button class="btn" onclick="hitungPR()">🔍 Hitung Skor Risiko</button>
+    <div id="result-pr" class="rb"></div>
+  </div>
+
+  <!-- ANC 12T -->
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-b">📋</div><div><div class="ctit">ANC Terpadu 12T</div><div class="csub">Permenkes No. 21 Tahun 2021 — Standar Terbaru</div></div></div>
+    <ul class="ckl">
+      <li><strong>T1 — Timbang</strong> berat badan & ukur tinggi badan</li>
+      <li><strong>T2 — Tekanan Darah</strong> setiap kunjungan</li>
+      <li><strong>T3 — LILA</strong> — lingkar lengan atas (batas KEK: &lt;23,5 cm)</li>
+      <li><strong>T4 — TFU</strong> — tinggi fundus uteri sesuai usia kehamilan</li>
+      <li><strong>T5 — Presentasi janin</strong> & hitung DJJ (ab UK 28 minggu)</li>
+      <li><strong>T6 — Imunisasi TT</strong> — status T1-T5, berikan sesuai kebutuhan</li>
+      <li><strong>T7 — Tablet Fe</strong> — minimal 90 tablet selama kehamilan</li>
+      <li><strong>T8 — Tes laboratorium</strong> — Hb, gol. darah, protein urin, GDS, HIV, Sifilis, Hepatitis B</li>
+      <li><strong>T9 — Tata laksana</strong> kasus / konsultasi / rujukan tepat waktu</li>
+      <li><strong>T10 — Temu wicara</strong> — konseling, KIE, P4K, persiapan persalinan</li>
+      <li><strong>T11 — Skrining Kesehatan Jiwa</strong> — EPDS, deteksi depresi & kecemasan antenatal</li>
+      <li><strong>T12 — Skrining KDRT</strong> — deteksi kekerasan fisik, psikologis, seksual pada ibu hamil</li>
+    </ul>
+    <div style="margin-top:10px;background:#e8f5ee;border-radius:8px;padding:10px 12px;font-size:11px;color:var(--medium);">
+      💡 <strong>T11 & T12</strong> adalah penambahan terbaru — pendekatan holistik biopsikososial untuk keselamatan ibu dan janin.
+    </div>
+  </div>
+
+  <!-- SKRINING EPDS -->
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-p">🧠</div><div><div class="ctit">Skrining Kesehatan Jiwa (T11)</div><div class="csub">Edinburgh Postnatal Depression Scale — Antenatal</div></div></div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Jawab berdasarkan perasaan Anda <strong>dalam 7 hari terakhir</strong>:</p>
+    <div id="epds-form">
+      <div class="fg"><label class="fl">1. Bisa melihat sisi lucu & tertawa</label><select class="fs epds-q"><option value="0">Sebanyak biasanya</option><option value="1">Tidak sebanyak biasanya</option><option value="2">Jarang sekali</option><option value="3">Tidak pernah</option></select></div>
+      <div class="fg"><label class="fl">2. Menantikan sesuatu dengan senang</label><select class="fs epds-q"><option value="0">Sebanyak biasanya</option><option value="1">Sedikit kurang</option><option value="2">Jauh lebih sedikit</option><option value="3">Hampir tidak ada</option></select></div>
+      <div class="fg"><label class="fl">3. Menyalahkan diri tanpa perlu</label><select class="fs epds-q"><option value="3">Ya, hampir selalu</option><option value="2">Ya, kadang-kadang</option><option value="1">Tidak terlalu sering</option><option value="0">Tidak pernah</option></select></div>
+      <div class="fg"><label class="fl">4. Cemas / khawatir tanpa alasan jelas</label><select class="fs epds-q"><option value="0">Tidak sama sekali</option><option value="1">Hampir tidak pernah</option><option value="2">Ya, kadang-kadang</option><option value="3">Ya, sangat sering</option></select></div>
+      <div class="fg"><label class="fl">5. Merasa takut / panik tanpa alasan</label><select class="fs epds-q"><option value="3">Ya, cukup sering</option><option value="2">Ya, kadang-kadang</option><option value="1">Tidak terlalu sering</option><option value="0">Tidak pernah</option></select></div>
+      <div class="fg"><label class="fl">6. Segala hal terasa terlalu banyak</label><select class="fs epds-q"><option value="3">Tidak bisa mengatasi sama sekali</option><option value="2">Kadang tidak bisa mengatasi</option><option value="1">Umumnya bisa mengatasi</option><option value="0">Bisa mengatasi seperti biasa</option></select></div>
+      <div class="fg"><label class="fl">7. Tidak bahagia sehingga sulit tidur</label><select class="fs epds-q"><option value="3">Hampir selalu</option><option value="2">Kadang-kadang</option><option value="1">Tidak terlalu sering</option><option value="0">Tidak pernah</option></select></div>
+      <div class="fg"><label class="fl">8. Merasa sedih atau sengsara</label><select class="fs epds-q"><option value="3">Hampir selalu</option><option value="2">Cukup sering</option><option value="1">Tidak terlalu sering</option><option value="0">Tidak pernah</option></select></div>
+      <div class="fg"><label class="fl">9. Tidak bahagia sampai menangis</label><select class="fs epds-q"><option value="3">Hampir selalu</option><option value="2">Cukup sering</option><option value="1">Hanya kadang-kadang</option><option value="0">Tidak pernah</option></select></div>
+      <div class="fg"><label class="fl">10. ⚠️ Pikiran menyakiti diri sendiri pernah muncul</label><select class="fs epds-q" id="epds-q10"><option value="3">Ya, cukup sering</option><option value="2">Kadang-kadang</option><option value="1">Hampir tidak pernah</option><option value="0">Tidak pernah</option></select></div>
+    </div>
+    <button class="btn" onclick="hitungEPDS()">🧠 Nilai Skor EPDS</button>
+    <div id="result-epds" class="rb"></div>
+  </div>
+
+  <!-- SKRINING KDRT -->
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-r">🛡️</div><div><div class="ctit">Skrining KDRT (T12)</div><div class="csub">Pertanyaan diajukan secara privat & penuh empati</div></div></div>
+    <div class="fg"><label class="fl">1. Pasangan/keluarga pernah menyakiti fisik Anda?</label><select class="fs kdrt-q"><option value="0">Tidak pernah</option><option value="1">Pernah / Ya</option></select></div>
+    <div class="fg"><label class="fl">2. Anda pernah merasa takut di rumah?</label><select class="fs kdrt-q"><option value="0">Tidak pernah</option><option value="1">Pernah / Ya</option></select></div>
+    <div class="fg"><label class="fl">3. Pernah dipaksa melakukan hubungan yang tidak diinginkan?</label><select class="fs kdrt-q"><option value="0">Tidak pernah</option><option value="1">Pernah / Ya</option></select></div>
+    <div class="fg"><label class="fl">4. Pasangan sering menghina atau merendahkan Anda?</label><select class="fs kdrt-q"><option value="0">Tidak pernah</option><option value="1">Pernah / Ya</option></select></div>
+    <button class="btn" onclick="nilaiKDRT()">🛡️ Nilai Skrining KDRT</button>
+    <div id="result-kdrt" class="rb"></div>
+  </div>
+</div>
+<div id="preek" class="page">
+<p class="stit">Manajemen Preeklampsia</p>
+  <p class="ssub">Skrining Buku KIA + deteksi dini hipertensi dalam kehamilan</p>
+  <div class="alert"><span style="font-size:18px">⚠️</span><p><strong>Preeklampsia</strong> menyebabkan 27–30% kematian ibu di Indonesia. Deteksi dini = menyelamatkan nyawa. Rujukan terencana bila ditemukan ≥2 risiko sedang atau ≥1 risiko tinggi.</p></div>
+
+  <!-- SKRINING BUKU KIA: FAKTOR RISIKO PE <20 MINGGU -->
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-r">📋</div><div><div class="ctit">Skrining Preeklampsia (UK &lt;20 Minggu)</div><div class="csub">Buku KIA 2024 — Faktor Risiko Anamnesis & Pemeriksaan Fisik</div></div></div>
+    <div style="background:linear-gradient(135deg,#1a3d1f,var(--hijau));border-radius:var(--rs);padding:12px 14px;color:#fff;font-size:12px;margin-bottom:14px;line-height:1.6;">
+      📌 Jika ibu berisiko preeklampsia, pemeriksaan kehamilan, proses melahirkan, dan pemeriksaan nifas dilaksanakan di <strong>Rumah Sakit</strong>. Lakukan <strong>rujukan terencana</strong> (tidak perlu menunggu inpartu).
+    </div>
+
+    <!-- ANAMNESIS - RISIKO SEDANG -->
+    <p style="font-size:11px;font-weight:700;color:var(--medium);margin-bottom:8px;letter-spacing:.5px;text-transform:uppercase;">🟡 Faktor Risiko Sedang (Anamnesis)</p>
+    <div style="background:#fefde7;border-radius:var(--rs);padding:12px;margin-bottom:12px;">
+      <label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px;cursor:pointer"><input type="checkbox" class="pe-sedang" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> Multipara dengan kehamilan oleh pasangan baru</label>
+      <label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px;cursor:pointer"><input type="checkbox" class="pe-sedang" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> Kehamilan dengan Teknologi Reproduksi Berbantu (Bayi Tabung / Induksi Ovulasi)</label>
+      <label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px;cursor:pointer"><input type="checkbox" class="pe-sedang" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> Usia ≥35 tahun</label>
+      <label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px;cursor:pointer"><input type="checkbox" class="pe-sedang" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> Nulipara</label>
+      <label style="display:flex;gap:8px;align-items:flex-start;font-size:12px;cursor:pointer"><input type="checkbox" class="pe-sedang" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> Multipara yang jarak kehamilan sebelumnya &gt;10 tahun</label>
+    </div>
+
+    <!-- ANAMNESIS - RISIKO TINGGI -->
+    <p style="font-size:11px;font-weight:700;color:var(--medium);margin-bottom:8px;letter-spacing:.5px;text-transform:uppercase;">🔴 Faktor Risiko Tinggi (Anamnesis)</p>
+    <div style="background:#fdecea;border-radius:var(--rs);padding:12px;margin-bottom:12px;">
+      <label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px;cursor:pointer"><input type="checkbox" class="pe-tinggi" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> Riwayat preeklampsia pada ibu atau saudara perempuan</label>
+      <label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px;cursor:pointer"><input type="checkbox" class="pe-tinggi" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> Obesitas sebelum hamil (IMT &gt;30 kg/m²)</label>
+      <label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px;cursor:pointer"><input type="checkbox" class="pe-tinggi" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> Multipara dengan riwayat preeklampsia sebelumnya</label>
+      <label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px;cursor:pointer"><input type="checkbox" class="pe-tinggi" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> Kehamilan multipel (kembar)</label>
+      <label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px;cursor:pointer"><input type="checkbox" class="pe-tinggi" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> Diabetes dalam kehamilan</label>
+      <label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px;cursor:pointer"><input type="checkbox" class="pe-tinggi" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> Hipertensi kronik</label>
+      <label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px;cursor:pointer"><input type="checkbox" class="pe-tinggi" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> Penyakit ginjal</label>
+      <label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px;cursor:pointer"><input type="checkbox" class="pe-tinggi" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> Penyakit autoimun, SLE</label>
+      <label style="display:flex;gap:8px;align-items:flex-start;font-size:12px;cursor:pointer"><input type="checkbox" class="pe-tinggi" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> Anti Phospholipid Syndrome* (riwayat keguguran berulang, IUFD, kelahiran prematur)</label>
+    </div>
+
+    <!-- PEMERIKSAAN FISIK -->
+    <p style="font-size:11px;font-weight:700;color:var(--medium);margin-bottom:8px;letter-spacing:.5px;text-transform:uppercase;">🔬 Pemeriksaan Fisik (UK &lt;20 Minggu)</p>
+    <div style="background:#e8f4fd;border-radius:var(--rs);padding:12px;margin-bottom:14px;">
+      <div class="fr" style="margin-bottom:10px">
+        <div class="fg"><label class="fl">Tekanan Darah Sistolik (mmHg)</label><input type="number" class="fi" id="pe-sis" placeholder="120" oninput="hitungMAP()"></div>
+        <div class="fg"><label class="fl">Tekanan Darah Diastolik (mmHg)</label><input type="number" class="fi" id="pe-dia" placeholder="80" oninput="hitungMAP()"></div>
+      </div>
+      <div style="background:#fff;border-radius:8px;padding:10px 12px;margin-bottom:10px;border:1px solid #a9cce3;">
+        <div style="font-size:11px;font-weight:700;color:var(--biru);margin-bottom:3px">MAP = (2×Diastolik + Sistolik) ÷ 3</div>
+        <div style="font-size:20px;font-weight:700;color:var(--hijau);font-family:'DM Mono',monospace" id="map-display">— mmHg</div>
+        <div style="font-size:11px;color:var(--muted)" id="map-status">Masukkan tekanan darah untuk hitung MAP</div>
+      </div>
+      <label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px;cursor:pointer">
+        <input type="checkbox" id="pe-map-tinggi" class="pe-tinggi-fisik" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> MAP &gt;90 mmHg (pada UK &lt;20 minggu)**
+      </label>
+      <div class="fr">
+        <div class="fg"><label class="fl">Usia Kehamilan (minggu)</label><input type="number" class="fi" id="pe-uk" placeholder="16"></div>
+        <div class="fg"><label class="fl">Protein Urin (Urin Celup)</label><select class="fs" id="pe-prot"><option value="0">Negatif</option><option value="1">+1 (trace)</option><option value="2">+2 (pada 2× pemeriksaan berjarak 6 jam)</option><option value="3">+3 atau lebih</option></select></div>
+      </div>
+      <label style="display:flex;gap:8px;align-items:flex-start;font-size:12px;cursor:pointer;margin-top:8px">
+        <input type="checkbox" id="pe-prot-tinggi" class="pe-tinggi-fisik" style="width:15px;height:15px;flex-shrink:0;margin-top:2px"> Proteinuria ≥+1 pada 2× pemeriksaan berjarak 6 jam / ≥300mg/24 jam
+      </label>
+    </div>
+
+    <button class="btn" onclick="nilaiPEBukuKIA()">🔍 Nilai Skrining Preeklampsia</button>
+    <div id="result-pe" class="rb"></div>
+  </div>
+
+  <!-- SKRINING DMG -->
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-o">🍬</div><div><div class="ctit">Skrining Diabetes Melitus Gestasional</div><div class="csub">Buku KIA 2024 — UK 24–28 Minggu</div></div></div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Pemeriksaan dilakukan pada usia kehamilan <strong>24–28 minggu</strong> oleh dokter.</p>
+    <div class="fr">
+      <div class="fg"><label class="fl">Gula Darah Puasa (mg/dL)</label><input type="number" class="fi" id="gdp-val" placeholder="85"></div>
+      <div class="fg"><label class="fl">Gula Darah 2 Jam Post Prandial (mg/dL)</label><input type="number" class="fi" id="gd2j-val" placeholder="120"></div>
+    </div>
+    <button class="btn" onclick="nilaiDMG()">🍬 Nilai Skrining DMG</button>
+    <div id="result-dmg" class="rb"></div>
+    <div style="margin-top:10px;background:#fff3e0;border-radius:8px;padding:10px 12px;font-size:11px;color:#7d4a00;">
+      ⚠️ <strong>Nilai Normal:</strong> GDP &lt;92 mg/dL dan GD2JPP &lt;153 mg/dL. Nilai di atas batas = kemungkinan DMG, perlu konfirmasi dokter SpOG.
+    </div>
+  </div>
+
+  <!-- MANAJEMEN PE AKTIF -->
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-r">💉</div><div><div class="ctit">Penilaian Klinis PE Aktif</div><div class="csub">Klasifikasi & tata laksana saat persalinan</div></div></div>
+    <div class="fr"><div class="fg"><label class="fl">TD Sistolik Aktual (mmHg)</label><input type="number" class="fi" id="pe-sis2" placeholder="145"></div><div class="fg"><label class="fl">TD Diastolik Aktual (mmHg)</label><input type="number" class="fi" id="pe-dia2" placeholder="95"></div></div>
+    <div class="fg"><label class="fl">Protein Urin</label><select class="fs" id="pe-prot2"><option value="0">Negatif</option><option value="1">+1</option><option value="2">+2</option><option value="3">+3 atau lebih</option></select></div>
+    <p style="font-size:11px;font-weight:700;color:var(--medium);margin-bottom:8px;margin-top:4px">Gejala Berat:</p>
+    <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;font-size:12px;cursor:pointer"><input type="checkbox" id="pe-kep" style="width:15px;height:15px"> Nyeri kepala hebat / gangguan penglihatan (skotoma)</label>
+    <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;font-size:12px;cursor:pointer"><input type="checkbox" id="pe-epi" style="width:15px;height:15px"> Nyeri epigastrium / ulu hati</label>
+    <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;font-size:12px;cursor:pointer"><input type="checkbox" id="pe-olg" style="width:15px;height:15px"> Oliguria (&lt;500 mL/24 jam)</label>
+    <label style="display:flex;gap:8px;align-items:center;margin-bottom:7px;font-size:12px;cursor:pointer"><input type="checkbox" id="pe-kjg" style="width:15px;height:15px"> Kejang / penurunan kesadaran (eklampsia)</label>
+    <button class="btn" onclick="nilaiPE()">🔍 Nilai PE Aktif</button>
+    <div id="result-pe2" class="rb"></div>
+  </div>
+
+  <div class="card bidan-only">
+    <div class="card-hdr"><div class="cic ic-y">💊</div><div><div class="ctit">Protokol MgSO₄</div><div class="csub">Pencegahan & penanganan kejang eklampsia</div></div></div>
+    <div class="refbox"><h4>Loading Dose</h4><p>4g MgSO₄ IV dalam 15–20 menit (10 mL MgSO₄ 40% + 10 mL aqua pro injeksi)</p></div>
+    <div class="refbox" style="margin-top:8px"><h4>Maintenance Dose</h4><p>6g dalam 6 jam (1g/jam) via infus, atau 10g IM (5g tiap bokong)</p></div>
+    <div style="height:1px;background:linear-gradient(90deg,transparent,#d4eadc,transparent);margin:12px 0;"></div>
+    <p style="font-size:11px;font-weight:700;color:var(--medium);margin-bottom:6px">Syarat Pemberian:</p>
+    <ul class="ckl"><li>Refleks patella (+)</li><li>Diuresis ≥25 mL/jam</li><li>Frekuensi napas ≥16x/menit</li><li>Antidotum: Kalsium glukonat 1g IV siap</li></ul>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-r">📊</div><div><div class="ctit">Klasifikasi Hipertensi Kehamilan</div><div class="csub">ISSHP 2022</div></div></div>
+    <table class="tbl"><tr><th>Klasifikasi</th><th>TD</th><th>Protein Urin</th></tr>
+    <tr><td>HT Gestasional</td><td>≥140/90</td><td>Negatif</td></tr>
+    <tr><td>Preeklampsia</td><td>≥140/90</td><td>+2 atau lebih</td></tr>
+    <tr><td>PE Berat</td><td>≥160/110</td><td>+3 / gejala berat</td></tr>
+    <tr><td>Eklampsia</td><td colspan="2">PE + kejang</td></tr>
+    <tr><td>HT Kronik</td><td>≥140/90</td><td>Sebelum UK 20 mgg</td></tr></table>
+  </div>
+</div>
+<div id="stunting" class="page">
+<p class="stit">Skrining Stunting & Status Gizi</p>
+<p class="ssub">Penilaian status gizi balita lengkap berbasis WHO 2006 & Permenkes 2/2020</p>
+
+<!-- STATUS GIZI KOMPREHENSIF -->
+<div class="card">
+  <div class="card-hdr"><div class="cic ic-y">📊</div><div><div class="ctit">Status Gizi Komprehensif Balita</div><div class="csub">BB/U · TB/U · IMT/U · LK/U · LILA — Z-Score WHO 2006</div></div></div>
+  <div class="fr">
+    <div class="fg"><label class="fl">Nama Anak</label><input type="text" class="fi" id="st-nama" placeholder="Nama anak"></div>
+    <div class="fg"><label class="fl">Jenis Kelamin</label><select class="fs" id="st-jk"><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
+  </div>
+  <div class="fr">
+    <div class="fg"><label class="fl">Umur (bulan)</label><input type="number" class="fi" id="st-umur" placeholder="0-60 bulan" min="0" max="60"></div>
+    <div class="fg"><label class="fl">Berat Badan (kg)</label><input type="number" class="fi" id="st-bb" placeholder="cth: 8.5" step="0.1"></div>
+  </div>
+  <div class="fr">
+    <div class="fg"><label class="fl">Tinggi/Panjang Badan (cm)</label><input type="number" class="fi" id="st-tb" placeholder="cth: 72" step="0.1"></div>
+    <div class="fg"><label class="fl">Lingkar Kepala (cm)</label><input type="number" class="fi" id="st-lk" placeholder="cth: 43" step="0.1"></div>
+  </div>
+  <div class="fr">
+    <div class="fg"><label class="fl">LILA Anak (cm)</label><input type="number" class="fi" id="st-lila" placeholder="cth: 13.5" step="0.1"></div>
+    <div class="fg"><label class="fl">LILA Ibu (cm)</label><input type="number" class="fi" id="st-lilaibu" placeholder="cth: 23.5" step="0.1"></div>
+  </div>
+  <button class="btn" onclick="hitungStatusGizi()">📊 Nilai Status Gizi Lengkap</button>
+  <div id="result-stunting" class="rb"></div>
+  <div id="result-gizi-lengkap" class="rb" style="display:none;margin-top:14px;"></div>
+</div>
+
+<!-- 1000 HPK -->
+<div class="card">
+  <div class="card-hdr"><div class="cic ic-g">🌱</div><div><div class="ctit">1000 HPK — Window of Opportunity</div><div class="csub">Intervensi gizi spesifik prioritas</div></div></div>
+  <div class="tl">
+    <div class="tli"><div class="tld"></div><div class="tlc"><div class="tlw">KEHAMILAN</div><div class="tlt">Intervensi Ibu Hamil</div><div class="tldesc">Tablet Fe 90 tab, asam folat 400mcg, PMT bumil KEK, edukasi gizi seimbang, ANC 12T lengkap</div></div></div>
+    <div class="tli"><div class="tld"></div><div class="tlc"><div class="tlw">0–6 BULAN</div><div class="tlt">ASI Eksklusif</div><div class="tldesc">ASI saja tanpa tambahan apapun. Inisiasi Menyusu Dini (IMD) segera setelah lahir. Hindari susu formula kecuali indikasi medis</div></div></div>
+    <div class="tli"><div class="tld"></div><div class="tlc"><div class="tlw">6–23 BULAN</div><div class="tlt">MPASI + ASI Lanjut</div><div class="tldesc">MPASI kaya protein hewani (telur, ikan, daging, ayam), Taburia/MNP jika tersedia, lanjutkan ASI hingga 2 tahun</div></div></div>
+    <div class="tli"><div class="tld"></div><div class="tlc"><div class="tlw">0–23 BULAN</div><div class="tlt">Stimulasi & Sanitasi</div><div class="tldesc">Stimulasi tumbuh kembang setiap hari, CTPS (cuci tangan pakai sabun), air bersih, jamban sehat, vaksinasi lengkap</div></div></div>
+  </div>
+</div>
+</div>
+<div id="anak" class="page">
+<p class="stit">Tumbuh Kembang Anak</p>
+<p class="ssub">Kalkulator usia otomatis, milestone, KPSP, tanda bahaya</p>
+
+<!-- KALKULATOR USIA -->
+<div class="card">
+  <div class="card-hdr"><div class="cic ic-b">👶</div><div><div class="ctit">Kalkulator Usia Anak</div><div class="csub">Otomatis dari tanggal lahir — Real-time</div></div></div>
+  <div class="fg"><label class="fl">Tanggal Lahir Anak</label><input type="date" class="fi" id="tl-anak" onchange="hitungUsiaAnak()"></div>
+  <div id="result-usia-anak" class="rb"></div>
+
+  <!-- Tracker usia anak -->
+  <div id="usia-anak-tracker" style="display:none" class="wt">
+    <div class="wt-title" id="ua-umur-teks"></div>
+    <div class="wt-sub" id="ua-umur-detail"></div>
+    <div class="wt-grid">
+      <div class="wt-item"><div class="wt-val" id="ua-tahun">—</div><div class="wt-lbl">Tahun</div></div>
+      <div class="wt-item"><div class="wt-val" id="ua-bulan">—</div><div class="wt-lbl">Bulan</div></div>
+      <div class="wt-item"><div class="wt-val" id="ua-hari">—</div><div class="wt-lbl">Hari ke-</div></div>
+      <div class="wt-item"><div class="wt-val" id="ua-total">—</div><div class="wt-lbl">Total Hari</div></div>
+    </div>
+    <div id="ua-kategori" style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.85);font-weight:600;"></div>
+  </div>
+
+  <!-- Milestone card -->
+  <div id="milestone-card" style="display:none;background:#f0faf5;border-radius:10px;padding:13px;margin-top:10px;border-left:4px solid #1a6b3c;">
+    <div style="font-size:11px;font-weight:700;color:#1a6b3c;margin-bottom:6px;">🎯 Milestone Perkembangan</div>
+    <div id="ms-subtitle" style="font-size:10px;color:#5a7a65;margin-bottom:8px;"></div>
+    <div id="milestone-content" style="font-size:12px;color:#1c2b22;line-height:1.6;"></div>
+  </div>
+</div>
+
+<!-- KPSP CALCULATOR -->
+<div class="card bidan-only">
+  <div class="card-hdr"><div class="cic ic-g">🎯</div><div><div class="ctit">Kalkulator Skor KPSP</div><div class="csub">Kuesioner Pra-Skrining Perkembangan — Kemenkes RI</div></div></div>
+  <div class="fg">
+    <label class="fl">Pilih Usia KPSP</label>
+    <select class="fs" id="kpsp-usia" onchange="loadKPSP()">
+      <option value="">-- Pilih Usia --</option>
+      <option value="3">3 Bulan</option><option value="6">6 Bulan</option>
+      <option value="9">9 Bulan</option><option value="12">12 Bulan</option>
+      <option value="15">15 Bulan</option><option value="18">18 Bulan</option>
+      <option value="21">21 Bulan</option><option value="24">24 Bulan</option>
+      <option value="30">30 Bulan</option><option value="36">36 Bulan</option>
+      <option value="42">42 Bulan</option><option value="48">48 Bulan</option>
+      <option value="54">54 Bulan</option><option value="60">60 Bulan</option>
+    </select>
+  </div>
+  <div id="kpsp-container"></div>
+  <div id="result-kpsp" class="rb"></div>
+</div>
+
+<!-- MILESTONE -->
+<div class="card">
+  <div class="card-hdr"><div class="cic ic-p">🎯</div><div><div class="ctit">Panduan Stimulasi Perkembangan</div><div class="csub">KPSP — Kuesioner Pra-Skrining Perkembangan</div></div></div>
+  <div class="chips" id="stim-chips">
+    <button class="chip on" onclick="showStimulasi('0-3',this)">0–3 Bln</button>
+    <button class="chip" onclick="showStimulasi('4-6',this)">4–6 Bln</button>
+    <button class="chip" onclick="showStimulasi('7-12',this)">7–12 Bln</button>
+    <button class="chip" onclick="showStimulasi('13-24',this)">13–24 Bln</button>
+    <button class="chip" onclick="showStimulasi('25-36',this)">25–36 Bln</button>
+    <button class="chip" onclick="showStimulasi('37-60',this)">37–60 Bln</button>
+  </div>
+  <div id="stim-content"></div>
+</div>
+
+<!-- POLA ASUH -->
+<div class="card">
+  <div class="card-hdr"><div class="cic ic-y">💛</div><div><div class="ctit">Pola Asuh Positif</div><div class="csub">Pengasuhan berbasis kasih sayang & stimulus</div></div></div>
+  <div class="chips" id="asuh-chips">
+    <button class="chip on" onclick="showAsuh('asah',this)">Asah</button>
+    <button class="chip" onclick="showAsuh('asih',this)">Asih</button>
+    <button class="chip" onclick="showAsuh('asuh',this)">Asuh</button>
+  </div>
+  <div id="asuh-content"></div>
+</div>
+
+<!-- TANDA BAHAYA -->
+<div class="card">
+  <div class="card-hdr"><div class="cic ic-r">⚠️</div><div><div class="ctit">Tanda Bahaya Bayi & Balita</div><div class="csub">Segera rujuk jika ada tanda berikut</div></div></div>
+  <div class="chips" id="bahaya-chips">
+    <button class="chip on" onclick="showBahayaBayi('neonatus',this)">Neonatus</button>
+    <button class="chip" onclick="showBahayaBayi('bayi',this)">Bayi 1-12 Bln</button>
+    <button class="chip" onclick="showBahayaBayi('balita',this)">Balita</button>
+  </div>
+  <div id="bahaya-content"></div>
+</div>
+
+<!-- IMUNISASI -->
+<div class="card">
+  <div class="card-hdr"><div class="cic ic-b">💉</div><div><div class="ctit">Jadwal Imunisasi IDAI 2023</div><div class="csub">Imunisasi dasar lengkap — wajib untuk semua anak</div></div></div>
+  <table class="tbl">
+    <tr><th>Usia</th><th>Vaksin</th><th>Keterangan</th></tr>
+    <tr><td>Lahir</td><td>HB-0, BCG, Polio 1</td><td>Segera setelah lahir</td></tr>
+    <tr><td>2 bulan</td><td>DPT-HB-Hib 1, Polio 2, PCV 1</td><td>Imunisasi dasar</td></tr>
+    <tr><td>3 bulan</td><td>DPT-HB-Hib 2, Polio 3, PCV 2</td><td>Imunisasi dasar</td></tr>
+    <tr><td>4 bulan</td><td>DPT-HB-Hib 3, Polio 4, IPV 1</td><td>Imunisasi dasar</td></tr>
+    <tr><td>9 bulan</td><td>MR (Campak-Rubella)</td><td>Program nasional</td></tr>
+    <tr><td>12 bulan</td><td>PCV 3</td><td>Booster</td></tr>
+    <tr><td>18 bulan</td><td>DPT-HB-Hib 4, MR 2</td><td>Booster</td></tr>
+  </table>
+</div>
+</div>
+<div id="gizi" class="page">
+<p class="stit">Gizi Ibu & Menyusui</p>
+  <p class="ssub">Kebutuhan nutrisi berbasis AKG 2019 & evidence</p>
+
+  <!-- KALKULATOR GIZI -->
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-g">🥗</div><div><div class="ctit">Kalkulator Kebutuhan Gizi</div><div class="csub">Estimasi AKG Ibu Hamil & Menyusui</div></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Berat Badan Sebelum Hamil (kg)</label><input type="number" class="fi" id="gz-bb" placeholder="55" step="0.1"></div><div class="fg"><label class="fl">Tinggi Badan (cm)</label><input type="number" class="fi" id="gz-tb" placeholder="158"></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Status</label><select class="fs" id="gz-status"><option value="1">Hamil Trimester 1</option><option value="2">Hamil Trimester 2</option><option value="3">Hamil Trimester 3</option><option value="4">Menyusui 0–6 bulan</option><option value="5">Menyusui 7–12 bulan</option></select></div><div class="fg"><label class="fl">Aktivitas Fisik</label><select class="fs" id="gz-pal"><option value="1.2">Sangat ringan</option><option value="1.4" selected>Ringan (sehari-hari)</option><option value="1.6">Sedang (cukup aktif)</option><option value="1.8">Berat (kerja fisik)</option></select></div></div>
+    <button class="btn" onclick="hitungGizi()">🧮 Hitung Kebutuhan Gizi</button>
+    <div id="result-gizi" class="rb"></div>
+  </div>
+
+  <!-- GIZI MENYUSUI -->
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-t">🤱</div><div><div class="ctit">Panduan Gizi Ibu Menyusui</div><div class="csub">Nutrisi untuk kualitas & kuantitas ASI</div></div></div>
+    <div class="chips" id="menyusui-chips">
+      <button class="chip on" onclick="showGiziMenyusui('kunci',this)">Nutrisi Kunci</button>
+      <button class="chip" onclick="showGiziMenyusui('booster',this)">Booster ASI</button>
+      <button class="chip" onclick="showGiziMenyusui('hindari',this)">Yang Dihindari</button>
+      <button class="chip" onclick="showGiziMenyusui('minum',this)">Kebutuhan Cairan</button>
+    </div>
+    <div id="menyusui-content" style="font-size:12px;line-height:1.7;"></div>
+  </div>
+
+  <!-- ANEMIA -->
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-r">🩸</div><div><div class="ctit">Skrining Anemia Kehamilan</div><div class="csub">Klasifikasi WHO & tata laksana</div></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Kadar Hemoglobin (g/dL)</label><input type="number" class="fi" id="hb-val" placeholder="11.5" step="0.1"></div><div class="fg"><label class="fl">Trimester</label><select class="fs" id="hb-tri"><option value="1">Trimester 1</option><option value="2">Trimester 2</option><option value="3">Trimester 3</option></select></div></div>
+    <button class="btn" onclick="nilaiAnemia()">🩸 Nilai Anemia</button>
+    <div id="result-hb" class="rb"></div>
+  </div>
+
+  <!-- PANDUAN MAKAN -->
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-y">🍱</div><div><div class="ctit">Panduan Makan Ibu Hamil</div><div class="csub">Isi Piringku untuk Ibu Hamil</div></div></div>
+    <div class="chips" id="makan-chips">
+      <button class="chip on" onclick="showMakan('karbo',this)">Karbohidrat</button>
+      <button class="chip" onclick="showMakan('protein',this)">Protein</button>
+      <button class="chip" onclick="showMakan('lemak',this)">Lemak Sehat</button>
+      <button class="chip" onclick="showMakan('mineral',this)">Mineral</button>
+    </div>
+    <div id="makan-content" style="font-size:12px;line-height:1.7;"></div>
+  </div>
+</div>
+<div id="kb" class="page">
+<p class="stit">Keluarga Berencana</p>
+  <p class="ssub">Konseling & pemilihan kontrasepsi berbasis KLOP</p>
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-p">💊</div><div><div class="ctit">Rekomendasi KB</div><div class="csub">Berdasarkan kondisi, laktasi, usia, paritas</div></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Usia (tahun)</label><input type="number" class="fi" id="kb-umur" placeholder="28"></div><div class="fg"><label class="fl">Jumlah Anak</label><input type="number" class="fi" id="kb-anak" placeholder="2" min="0"></div></div>
+    <div class="fg"><label class="fl">Status Menyusui</label><select class="fs" id="kb-laktasi"><option value="menyusui">Menyusui &lt;6 bulan</option><option value="tidak">Tidak menyusui / &gt;6 bulan</option><option value="interval">Tidak hamil / interval</option></select></div>
+    <div class="fg"><label class="fl">Riwayat Penyakit</label><select class="fs" id="kb-penyakit"><option value="sehat">Sehat</option><option value="hipertensi">Hipertensi</option><option value="dm">Diabetes Mellitus</option><option value="varises">Varises / Trombosis</option><option value="miom">Miom Uterus</option></select></div>
+    <div class="fg"><label class="fl">Tujuan KB</label><select class="fs" id="kb-tujuan"><option value="tunda">Tunda kehamilan (&lt;3 tahun)</option><option value="jarak">Jarak kehamilan (3–5 tahun)</option><option value="stop">Tidak ingin anak lagi</option></select></div>
+    <button class="btn" onclick="rekomendasiKB()">💡 Rekomendasi KB</button>
+    <div id="result-kb" class="rb"></div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-b">📊</div><div><div class="ctit">Efektivitas Kontrasepsi</div><div class="csub">Indeks Pearl (kehamilan/100 wanita/tahun)</div></div></div>
+    <table class="tbl"><tr><th>Metode</th><th>Efektivitas</th><th>Pearl Index</th></tr>
+    <tr><td>Implan</td><td>99.9%</td><td>0.05</td></tr>
+    <tr><td>Vasektomi (MOP)</td><td>99.9%</td><td>0.1</td></tr>
+    <tr><td>Tubektomi (MOW)</td><td>99.5%</td><td>0.5</td></tr>
+    <tr><td>AKDR / IUD</td><td>99.2%</td><td>0.8</td></tr>
+    <tr><td>Suntik 3 bulan</td><td>97%</td><td>3</td></tr>
+    <tr><td>MAL</td><td>98%</td><td>2</td></tr>
+    <tr><td>Pil Kombinasi</td><td>92–99%</td><td>1–8</td></tr>
+    <tr><td>Kondom</td><td>85%</td><td>15</td></tr></table>
+  </div>
+</div>
+<div id="kegawatan" class="page">
+<p class="stit">Kegawatdaruratan Obstetri</p>
+  <p class="ssub">5 penyebab utama kematian ibu — protokol tindakan cepat</p>
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-r">🚨</div><div><div class="ctit">Protokol Kegawatdaruratan</div><div class="csub">Pilih kondisi yang dihadapi</div></div></div>
+    <div class="chips" id="keg-chips">
+      <button class="chip on" onclick="showKegawatan('pph',this)">PPH</button>
+      <button class="chip" onclick="showKegawatan('eklamsia',this)">Eklampsia</button>
+      <button class="chip" onclick="showKegawatan('sepsis',this)">Sepsis</button>
+      <button class="chip" onclick="showKegawatan('abortus',this)">Abortus</button>
+      <button class="chip" onclick="showKegawatan('emboli',this)">Emboli</button>
+    </div>
+    <div id="keg-content" style="font-size:12px;line-height:1.7;"></div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-r">📞</div><div><div class="ctit">Kontak Darurat Jabar</div><div class="csub">Rujukan regional & hotline</div></div></div>
+    <div class="refbox"><h4>Hotline Kegawatdaruratan</h4><ul><li>SISRUTE / PSC 119 ext 9</li><li>Dinkes Jabar: (022) 7218743</li><li>BPBD Jabar: (022) 7272892</li></ul></div>
+    <div class="refbox" style="margin-top:8px"><h4>RS Rujukan Regional Jabar</h4><ul><li>RSHS Bandung — Rujukan tersier utama</li><li>RS dr. Slamet Garut — Regional Garut</li><li>RSUD Tasikmalaya — Priangan Timur</li><li>RSUD Ciawi Bogor — Regional Bogor</li></ul></div>
+  </div>
+</div>
+<div id="referensi" class="page">
+<p class="stit">Referensi Klinis</p>
+  <p class="ssub">Panduan EBM, regulasi, & sumber ilmiah terpercaya</p>
+
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-b">📋</div><div><div class="ctit">Dasar Hukum & Regulasi</div><div class="csub">Kebijakan pelayanan kebidanan Indonesia</div></div></div>
+    <ul class="ckl">
+      <li>UU No. 4/2019 — tentang Kebidanan</li>
+      <li>UU No. 36/2009 — tentang Kesehatan</li>
+      <li>Kepmenkes No. 320/2020 — Standar Profesi Bidan</li>
+      <li>Permenkes No. 21/2021 — Pelayanan Kesehatan Masa Kehamilan, Persalinan, dan Nifas</li>
+      <li>Permenkes No. 2/2020 — Standar Antropometri Anak</li>
+      <li>Permenkes No. 28/2017 — Izin dan Penyelenggaraan Praktik Bidan</li>
+      <li>Permenkes No. 4/2019 — Standar Teknis Pemenuhan Mutu Pelayanan Dasar</li>
+      <li>Permenkes No. 43/2019 — Puskesmas</li>
+      <li>Perpres No. 72/2021 — Percepatan Penurunan Stunting</li>
+      <li>RPJMD Jabar 2023–2028 — Target AKI/AKB & Stunting Jawa Barat</li>
+      <li>PP No. 38/2017 — Inovasi Daerah (dasar hukum KIJB)</li>
+      <li>Kepmenkes No. 284/2004 — Buku KIA (Kesehatan Ibu dan Anak)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-y">📚</div><div><div class="ctit">Referensi Kebidanan & Obstetri</div><div class="csub">Evidence-Based Midwifery & Obstetrics</div></div></div>
+    <ul class="ckl">
+      <li>WHO. <em>WHO Recommendations on Antenatal Care for a Positive Pregnancy Experience.</em> Geneva: WHO; 2016.</li>
+      <li>ISSHP. <em>Classification, Diagnosis & Management of Hypertensive Disorders of Pregnancy.</em> Pregnancy Hypertension; 2022.</li>
+      <li>POGI. <em>Pedoman Nasional Pelayanan Kedokteran: Diagnosis dan Tata Laksana Preeklampsia.</em> Jakarta: POGI; 2023.</li>
+      <li>IBI. <em>Standar Pelayanan Kebidanan Indonesia.</em> Jakarta: Ikatan Bidan Indonesia; 2022.</li>
+      <li>Kemenkes RI. <em>Buku Acuan Pelatihan Klinik Asuhan Persalinan Normal (APN).</em> Jakarta; 2017.</li>
+      <li>ACOG. <em>Gestational Hypertension and Preeclampsia: ACOG Practice Bulletin No. 222.</em> Obstet Gynecol; 2020.</li>
+      <li>Cunningham FG et al. <em>Williams Obstetrics, 25th Edition.</em> McGraw-Hill; 2018.</li>
+      <li>Prawirohardjo S. <em>Ilmu Kebidanan, Edisi 4.</em> Jakarta: PT Bina Pustaka; 2016.</li>
+      <li>Varney H. <em>Varney's Midwifery, 5th Edition.</em> Jones & Bartlett; 2015.</li>
+      <li>Mochtar R. <em>Sinopsis Obstetri, Edisi 3.</em> Jakarta: EGC; 2013.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-g">👶</div><div><div class="ctit">Referensi Tumbuh Kembang & Pediatri</div><div class="csub">Child Health & Development</div></div></div>
+    <ul class="ckl">
+      <li>WHO. <em>Child Growth Standards: Length/Height-for-Age, Weight-for-Age, Weight-for-Length.</em> Geneva: WHO; 2006.</li>
+      <li>IDAI. <em>Panduan Praktik Klinis Tumbuh Kembang Anak.</em> Jakarta: IDAI; 2023.</li>
+      <li>Kemenkes RI. <em>Buku KIA: Kesehatan Ibu dan Anak.</em> Jakarta: Kemenkes; 2022.</li>
+      <li>Soetjiningsih, Ranuh IGNG. <em>Tumbuh Kembang Anak, Edisi 2.</em> Jakarta: EGC; 2018.</li>
+      <li>Kemenkes RI. <em>Pedoman Pelaksanaan Stimulasi, Deteksi dan Intervensi Dini Tumbuh Kembang (SDIDTK).</em> Jakarta; 2016.</li>
+      <li>IDAI. <em>Jadwal Imunisasi Anak Usia 0–18 Tahun Rekomendasi IDAI.</em> Jakarta: IDAI; 2023.</li>
+      <li>WHO/UNICEF. <em>Indicators for Assessing Infant and Young Child Feeding Practices.</em> Geneva: WHO; 2021.</li>
+      <li>Kemenkes RI. <em>Peraturan Menteri Kesehatan No. 2 Tahun 2020 tentang Standar Antropometri Penilaian Status Gizi Anak.</em> 2020.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-o">🥗</div><div><div class="ctit">Referensi Gizi & Nutrisi</div><div class="csub">Nutrition & Dietetics</div></div></div>
+    <ul class="ckl">
+      <li>Kemenkes RI. <em>Angka Kecukupan Gizi (AKG) yang Dianjurkan untuk Masyarakat Indonesia.</em> Permenkes No. 28/2019.</li>
+      <li>Kemenkes RI. <em>Pedoman Gizi Seimbang.</em> Jakarta: Kemenkes; 2023.</li>
+      <li>WHO. <em>Nutritional Interventions Update: Multiple Micronutrient Supplements During Pregnancy.</em> Geneva; 2020.</li>
+      <li>Kemenkes RI. <em>Panduan Pemberian Makanan Bayi dan Anak (PMBA).</em> Jakarta; 2020.</li>
+      <li>TNPG. <em>Strategi Nasional Percepatan Pencegahan Stunting 2018–2024.</em> Jakarta: TNP2K; 2018.</li>
+      <li>Almatsier S. <em>Prinsip Dasar Ilmu Gizi.</em> Jakarta: Gramedia; 2010.</li>
+      <li>Arisman. <em>Gizi dalam Daur Kehidupan, Edisi 2.</em> Jakarta: EGC; 2010.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-t">🔬</div><div><div class="ctit">Referensi Neonatus & Bayi Baru Lahir</div><div class="csub">Neonatology & Newborn Care</div></div></div>
+    <ul class="ckl">
+      <li>WHO. <em>WHO Recommendations for Care of the Preterm or Low-Birth-Weight Infant.</em> Geneva: WHO; 2022.</li>
+      <li>WHO/UNICEF. <em>Protecting, Promoting and Supporting Breastfeeding.</em> Geneva; 2018.</li>
+      <li>ACOG/AAP. <em>Guidelines for Perinatal Care, 8th Edition.</em> 2017.</li>
+      <li>Kemenkes RI. <em>Pedoman Pelayanan Neonatal Esensial.</em> Jakarta; 2018.</li>
+      <li>WHO. <em>Managing Newborn Problems: A Guide for Doctors, Nurses and Midwives.</em> Geneva; 2003.</li>
+      <li>Gomella TL. <em>Neonatology: Management, Procedures, On-Call Problems, Diseases and Drugs, 7th Ed.</em> McGraw-Hill; 2013.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-p">💊</div><div><div class="ctit">Referensi Keluarga Berencana & Reproduksi</div><div class="csub">Family Planning & Reproductive Health</div></div></div>
+    <ul class="ckl">
+      <li>BKKBN. <em>Pedoman Pelayanan Kontrasepsi dan Keluarga Berencana.</em> Jakarta: BKKBN; 2023.</li>
+      <li>WHO. <em>Medical Eligibility Criteria for Contraceptive Use, 5th Edition (MEC).</em> Geneva: WHO; 2015.</li>
+      <li>Kemenkes RI. <em>Modul Pelatihan Pelayanan Kontrasepsi bagi Bidan.</em> Jakarta; 2019.</li>
+      <li>Glasier A, Gebbie A. <em>Handbook of Family Planning and Reproductive Healthcare, 5th Ed.</em> Churchill Livingstone; 2008.</li>
+      <li>Hartanto H. <em>Keluarga Berencana dan Kontrasepsi.</em> Jakarta: Pustaka Sinar Harapan; 2010.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-r">🚨</div><div><div class="ctit">Referensi Kegawatdaruratan Obstetri</div><div class="csub">Obstetric Emergency</div></div></div>
+    <ul class="ckl">
+      <li>WHO. <em>Managing Complications in Pregnancy and Childbirth: A Guide for Midwives and Doctors, 2nd Ed.</em> Geneva: WHO; 2017.</li>
+      <li>POGI. <em>Pedoman Nasional Pelayanan Kedokteran: Perdarahan Pascasalin.</em> Jakarta: POGI; 2022.</li>
+      <li>Kemenkes RI. <em>Buku Saku Pelayanan Kesehatan Ibu di Fasilitas Kesehatan Dasar dan Rujukan.</em> Jakarta; 2013.</li>
+      <li>ALSO (Advanced Life Support in Obstetrics). <em>Provider Course Manual, 8th Edition.</em> AAFP; 2020.</li>
+      <li>Magann EF. <em>Amniotic Fluid Embolism: An Obstetric Emergency.</em> Clin Obstet Gynecol; 2019.</li>
+      <li>Sentilhes L et al. <em>Postpartum Haemorrhage: Prevention and Treatment.</em> Expert Opinion; 2016.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-p">🌸</div><div><div class="ctit">Publikasi Ilmiah — Ernawati, S.ST., Bdn., M.Kes.</div><div class="csub">Karya ilmiah penulis platform ini</div></div></div>
+    <div style="background:linear-gradient(135deg,#1a3d1f,var(--hijau));border-radius:var(--rs);padding:12px 14px;color:#fff;font-size:12px;margin-bottom:12px;line-height:1.6;">
+      ✍️ Referensi berikut merupakan hasil penelitian dan publikasi ilmiah langsung dari pengembang platform TeleKIA Jabar yang dapat digunakan untuk penulisan makalah, proposal penelitian, dan pengembangan modul pembelajaran.
+    </div>
+
+    <!-- Pub 34 -->
+    <div style="background:#f5faf7;border-radius:var(--rs);padding:13px;margin-bottom:10px;border-left:4px solid var(--hijau3);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:5px;">
+        <div style="background:var(--hijau);color:#fff;border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;flex-shrink:0;">Jurnal Ilmiah Kebidanan</div>
+        <span style="font-size:10px;color:var(--muted);">✍️ Penulis</span>
+      </div>
+      <p style="font-size:12px;font-weight:700;color:var(--gelap);margin-bottom:4px;line-height:1.4;">Labor Position and Its Impact on The Birth Process: A Literature Review</p>
+      <p style="font-size:11px;color:var(--hijau);margin-bottom:5px;font-weight:600;">Hamdhar Ahmar, Sherlia Sofyana, Siti Suciari, <strong>Ernawati</strong>, Firda Liantianty</p>
+      <p style="font-size:11px;color:var(--muted);line-height:1.5;">Tinjauan literatur pengaruh posisi persalinan terhadap proses persalinan. Membuktikan posisi tegak dan lateral meningkatkan efektivitas kontraksi dan memperpendek kala I & II.</p>
+    </div>
+
+    <!-- Pub 35 -->
+    <div style="background:#f5faf7;border-radius:var(--rs);padding:13px;margin-bottom:10px;border-left:4px solid var(--hijau3);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:5px;">
+        <div style="background:#7d3c98;color:#fff;border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;flex-shrink:0;">Studi Kasus Klinis</div>
+        <span style="font-size:10px;color:var(--muted);">✍️ Penulis</span>
+      </div>
+      <p style="font-size:12px;font-weight:700;color:var(--gelap);margin-bottom:4px;line-height:1.4;">Topical Breast Milk as an Alternative Prevention Intervention of Omphalitis in Newborn: Case Study</p>
+      <p style="font-size:11px;color:var(--hijau);margin-bottom:5px;font-weight:600;"><strong>Ernawati</strong></p>
+      <p style="font-size:11px;color:var(--muted);line-height:1.5;">Studi kasus penggunaan ASI topikal sebagai intervensi pencegahan omfalitis pada neonatus. Mendukung penerapan dry cord care berbasis ASI yang direkomendasikan WHO.</p>
+    </div>
+
+    <!-- Pub 36 -->
+    <div style="background:#f5faf7;border-radius:var(--rs);padding:13px;margin-bottom:10px;border-left:4px solid var(--emas);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:5px;">
+        <div style="background:var(--emas);color:#fff;border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;flex-shrink:0;">Penelitian Orisinal · 2017</div>
+        <span style="font-size:10px;color:var(--muted);">✍️ Penulis</span>
+      </div>
+      <p style="font-size:12px;font-weight:700;color:var(--gelap);margin-bottom:4px;line-height:1.4;">Penundaan Pemotongan Tali Pusat Terhadap Tingkat Kebugaran Bayi Asfiksia di BPM Ernawati Kabupaten Garut Tahun 2017</p>
+      <p style="font-size:11px;color:var(--hijau);margin-bottom:5px;font-weight:600;"><strong>Ernawati</strong>, Sarah</p>
+      <p style="font-size:11px;color:var(--muted);line-height:1.5;">Penelitian orisinal di Kabupaten Garut tentang pengaruh DCC (Delayed Cord Clamping) terhadap kebugaran bayi asfiksia. Temuan lokal yang memperkuat rekomendasi WHO & ACOG tentang manfaat penundaan pemotongan tali pusat.</p>
+    </div>
+
+    <!-- Pub 37 -->
+    <div style="background:#f5faf7;border-radius:var(--rs);padding:13px;margin-bottom:10px;border-left:4px solid #2471a3;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:5px;">
+        <div style="background:#2471a3;color:#fff;border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;flex-shrink:0;">NMS Journal · 2022 · Terindeks Internasional</div>
+        <span style="font-size:10px;color:var(--muted);">✍️ Penulis</span>
+      </div>
+      <p style="font-size:12px;font-weight:700;color:var(--gelap);margin-bottom:4px;line-height:1.4;">The Effect of Polyethylene Swaddle in Hypothermia Prevention Among Low Birth Weight Neonates</p>
+      <p style="font-size:11px;color:var(--hijau);margin-bottom:5px;font-weight:600;">Iin, <strong>Ernawati</strong> — Nurses and Midwives Sciences Journal (NMS Journal)</p>
+      <p style="font-size:11px;color:var(--muted);line-height:1.5;">Artikel terindeks internasional tentang efektivitas swaddle polietilen dalam pencegahan hipotermia pada neonatus BBLR. Mendukung panduan perawatan termal BBL berbasis bukti.</p>
+    </div>
+
+    <div style="background:#e8f5ee;border-radius:var(--rs);padding:10px 12px;font-size:11px;color:var(--medium);margin-top:4px;">
+      📌 Semua referensi dapat diakses secara online dan gratis. Artikel PubMed Central (PMC) dan WHO tersedia akses penuh tanpa biaya. Beberapa panduan ACOG/RCOG memerlukan akun institusi atau akses melalui perpustakaan digital.
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="cic ic-g">🏆</div><div><div class="ctit">Tentang TeleKIA Jabar</div><div class="csub">Inovasi Pelayanan Publik Kesehatan · KIJB 2026</div></div></div>
+
+    <div style="background:linear-gradient(135deg,#1a3d1f,var(--hijau));border-radius:var(--rs);padding:14px 16px;color:#fff;margin-bottom:14px;">
+      <div style="font-size:10px;font-weight:700;color:var(--emas2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px">👥 Tim Pengembang</div>
+
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.15);">
+        <div style="background:var(--emas);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">👩‍⚕️</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--emas2)">Ernawati, S.ST., Bdn., M.Kes.</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:1px">Ketua Tim — Dosen Prodi Pendidikan Profesi Bidan</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.6)">FIKK · INKes Karsa Husada Garut</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.15);">
+        <div style="background:#2471a3;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">👨‍⚕️</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#85c1e9">dr. Ziyad Fadlullah</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:1px">Anggota — Dokter Fungsional</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.6)">Puskesmas Cihurip, Garut</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.15);">
+        <div style="background:#0097a7;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🩺</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#80deea">Ners. Faza Fauzan Abdul A'ziz, S.Kep</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:1px">Anggota — Perawat</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.6)">Keperawatan Komunitas</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <div style="background:#7d3c98;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">💊</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#d7bde2">Muhammad Azzam, Amd.Farm</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:1px">Anggota — Asisten Apoteker</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.6)">RS Guntur, Garut</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.15);">
+        <div style="background:linear-gradient(135deg,#c8973a,#e8b85a);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🌸</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#e8b85a">Putri Zulfa Anjelika Mentari, S.Keb</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:1px">Pengembang Platform — Sarjana Kebidanan</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.6)">INKes Karsa Husada Garut</div>
+        </div>
+      </div>
+    </div>
+
+    <ul class="ckl">
+      <li>Tim lintas profesi: Kebidanan · Kedokteran · Keperawatan · Farmasi</li>
+      <li>Bagian dari ekosistem digital <strong>FLORIS Series</strong> — platform kebidanan terintegrasi</li>
+      <li>Berbasis Kepmenkes 320/2020, Permenkes 21/2021, standar POGI/IBI/IDAI</li>
+      <li>Dapat digunakan di Puskesmas, TPMB, Posyandu, dan rumah tangga</li>
+      <li>Mendukung target RPJMD Jabar: AKI &lt;183/100.000 KH tahun 2028</li>
+      <li>Kontribusi untuk <strong>KIJB 2026 — From Ideas to Impact</strong></li>
+    </ul>
+  </div>
+</div>
+
+<footer>
+  <p><strong>TeleKIA Jabar v2.0</strong> · Platform Telemidwifery Terpadu<br>
+  <strong>Ernawati, S.ST., Bdn., M.Kes.</strong> · <strong>dr. Ziyad Fadlullah</strong> · <strong>Ners. Faza Fauzan Abdul A'ziz, S.Kep</strong> · <strong>Muhammad Azzam, Amd.Farm</strong> · <strong>Putri Zulfa Anjelika Mentari, S.Keb</strong><br>
+  INKes Karsa Husada Garut · Puskesmas Cihurip · RS Guntur Garut<br>
+  <span style="color:rgba(255,255,255,.25)">FLORIS Series · KIJB 2026 · Inovasi Pelayanan Publik Jawa Barat</span></p>
+</footer>
+
+<script>
+// NAVIGASI UTAMA - menggunakan class "page" dan "on"
+function gotoTab(id, btn) {
+  // Sembunyikan semua page
+  var pages = document.getElementsByClassName('page');
+  for (var i = 0; i < pages.length; i++) {
+    pages[i].className = 'page';
+  }
+  // Tampilkan page yang dipilih
+  var target = document.getElementById(id);
+  if (target) target.className = 'page on';
+  // Update tab highlight
+  var tabs = document.querySelectorAll('.tab-btn');
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].className = 'tab-btn';
+  }
+  if (btn) btn.className = 'tab-btn on';
+  // Scroll ke atas
+  window.scrollTo(0, 0);
+}
+
+// Alias untuk backward compat (menu cards masih pakai showTab)
+function showTab(id) {
+  var tabs = document.querySelectorAll('.tab-btn');
+  var order = ['beranda','anc','preek','stunting','anak','gizi','kb','kegawatan','referensi'];
+  var idx = order.indexOf(id);
+  gotoTab(id, idx >= 0 ? tabs[idx] : null);
+}
+
+function setMode(mode, btn) {
+  var btns = document.querySelectorAll('.mode-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].className = 'mode-btn';
+  btn.className = 'mode-btn aktif';
+  document.body.className = 'mode-' + mode;
+}
+
+
+
+
+// ===== HITUNG HPHT =====
+function hitungHPHT() {
+  const val = document.getElementById('hpht-tgl').value;
+  if (!val) return;
+  const hpht = new Date(val);
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  if (hpht > today) { showRb('result-hpht','rb-r','⚠️ HPHT tidak valid','Tanggal HPHT tidak boleh lebih dari hari ini.',''); return; }
+
+  const diffMs = today - hpht;
+  const diffDays = Math.floor(diffMs / 86400000);
+  const minggu = Math.floor(diffDays / 7);
+  const hariSisa = diffDays % 7;
+
+  const hpl = new Date(hpht);
+  hpl.setDate(hpl.getDate() + 280);
+  const sisaHPL = Math.ceil((hpl - today) / 86400000);
+  const hplStr = hpl.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+
+  const el = document.getElementById('result-hpht');
+  el.style.display = 'none';
+  const wt = document.getElementById('week-tracker');
+  wt.style.display = 'block';
+
+  document.getElementById('wt-minggu').textContent = minggu;
+  document.getElementById('wt-hari').textContent = diffDays;
+  document.getElementById('wt-hpl').textContent = hplStr;
+  document.getElementById('wt-sisa').textContent = sisaHPL > 0 ? sisaHPL : 'Sudah lewat HPL';
+  document.getElementById('wt-judul').textContent = `Usia Kehamilan: ${minggu} Minggu ${hariSisa} Hari`;
+
+  let trimester = '', info = '', warnColor = '';
+  if (minggu < 13) {
+    trimester = 'Trimester 1 (0–12 minggu)';
+    info = '🌱 <strong>Trimester 1:</strong> Organ vital janin terbentuk. Konsumsi asam folat 400mcg/hari, hindari rokok & alkohol, jaga pola makan. Waspadai mual-muntah berlebihan (hiperemesis). Kunjungan ANC pertama segera ke bidan/dokter.';
+  } else if (minggu < 28) {
+    trimester = 'Trimester 2 (13–27 minggu)';
+    info = '🌿 <strong>Trimester 2:</strong> Janin tumbuh pesat. DJJ mulai terdengar. Pemeriksaan USG pertama dianjurkan. Mulai rasakan gerakan janin. Perhatikan tekanan darah & proteinuria. Kunjungan ANC K3–K4.';
+  } else if (minggu < 37) {
+    trimester = 'Trimester 3 (28–36 minggu)';
+    info = '🍃 <strong>Trimester 3:</strong> Persiapan persalinan. Pantau gerakan janin minimal 10x/12 jam. Persiapkan P4K (Perencanaan Persalinan & Pencegahan Komplikasi). Kunjungan lebih sering (K5–K6).';
+  } else if (minggu < 42) {
+    trimester = 'Kehamilan Aterm (37–41 minggu)';
+    info = '🌸 <strong>Aterm:</strong> Siap persalinan. Kenali tanda-tanda persalinan: mulas teratur, ketuban pecah, keluar lendir darah. Segera ke fasilitas kesehatan jika ada tanda bahaya.';
+  } else {
+    trimester = '⚠️ Kehamilan Serotinus (≥42 minggu)';
+    info = '🚨 <strong>Serotinus:</strong> Segera konsultasi ke dokter/bidan. Kehamilan melebihi 42 minggu meningkatkan risiko. Perlu evaluasi kondisi janin dan pertimbangan induksi.';
+  }
+  document.getElementById('wt-sub').textContent = trimester;
+  document.getElementById('wt-info').innerHTML = info;
+  // update TFU field
+  document.getElementById('tfu-uk').value = minggu;
+}
+
+// ===== TBBJ =====
+function hitungTBBJ() {
+  const tfu = parseFloat(document.getElementById('tfu-nilai').value);
+  const lp  = parseFloat(document.getElementById('lp-nilai').value);
+  const pres = document.getElementById('tfu-presentasi').value;
+  const uk  = parseFloat(document.getElementById('tfu-uk').value) || 0;
+  if (!tfu || !lp) { alert('Mohon isi TFU dan Lingkar Perut.'); return; }
+
+  // Johnson-Toshach: TBBJ = (TFU - n) x 155
+  // n=11 jika kepala belum masuk PAP, n=12 jika sudah masuk PAP
+  const n = (pres === 'kepala-masuk') ? 12 : 11;
+  const tbbj_johnson = (tfu - n) * 155;
+
+  // Dare: TBBJ = TFU x LP (dalam gram)
+  const tbbj_dare = tfu * lp;
+
+  // Rata-rata
+  const rata = Math.round((tbbj_johnson + tbbj_dare) / 2);
+
+  let kategori = '', catatan = '';
+  if (rata < 2500) { kategori = '⚠️ BBLR — Berat Bayi Lahir Rendah'; catatan = 'Taksiran berat bayi &lt;2500g. Waspadai BBLR. Konsultasi segera ke dokter/bidan.'; }
+  else if (rata <= 4000) { kategori = '✅ Normal'; catatan = 'Taksiran berat bayi dalam rentang normal (2500–4000g).'; }
+  else { kategori = '⚠️ Makrosomia — Bayi Besar'; catatan = 'Taksiran berat bayi &gt;4000g. Risiko distosia bahu, perlu evaluasi lebih lanjut oleh dokter/SpOG.'; }
+
+  const el = document.getElementById('result-tbbj');
+  el.className = 'rb rb-b show';
+  el.innerHTML = `
+    <div class="rt" style="color:#1a5276">📐 Hasil Taksiran Berat Badan Janin</div>
+    <div class="ig">
+      <div class="ii"><div class="il">Johnson-Toshach</div><div class="iv big">${Math.round(tbbj_johnson).toLocaleString()} g</div></div>
+      <div class="ii"><div class="il">Rumus Dare</div><div class="iv big">${Math.round(tbbj_dare).toLocaleString()} g</div></div>
+      <div class="ii"><div class="il">Rata-rata TBBJ</div><div class="iv big" style="color:var(--hijau)">${rata.toLocaleString()} g</div></div>
+      <div class="ii"><div class="il">TFU</div><div class="iv">${tfu} cm</div></div>
+      <div class="ii"><div class="il">Lingkar Perut</div><div class="iv">${lp} cm</div></div>
+      <div class="ii"><div class="il">UK Estimasi</div><div class="iv">${uk} mgg</div></div>
+    </div>
+    <div style="margin-top:10px;background:#e8f4fd;border-radius:8px;padding:10px 12px;font-size:12px;">
+      <strong>${kategori}</strong><br>${catatan}<br>
+      <span style="font-size:11px;color:var(--muted)">*Johnson: (${tfu} - ${n}) × 155 | Dare: ${tfu} × ${lp}. Taksiran tidak menggantikan USG.</span>
+    </div>`;
+}
+
+// ===== SKOR POEDJI ROCHJATI =====
+function hitungPR() {
+  let skor = 2;
+  document.querySelectorAll('.pr-cb').forEach(cb => { if(cb.checked) skor += parseInt(cb.dataset.val); });
+  const tb = parseFloat(document.getElementById('pr-tb').value);
+  if (tb > 0 && tb <= 145) {
+    const alreadyCounted = Array.from(document.querySelectorAll('.pr-cb')).some((cb,i) => i===4 && cb.checked);
+    if (!alreadyCounted) skor += 4;
+  }
+  let title, desc, action, cls;
+  if (skor <= 6) {
+    title = '🟢 Risiko Rendah (KRR)'; cls = 'rb-g';
+    desc = `Skor ${skor} — Kehamilan risiko rendah. Persalinan dapat dilayani bidan terlatih di faskes primer.`;
+    action = '<ul><li>ANC minimal 6x (K1–K6)</li><li>Pantau kehamilan rutin</li><li>Persalinan di TPMB / Puskesmas PONED</li></ul>';
+  } else if (skor <= 10) {
+    title = '🟡 Risiko Tinggi (KRT)'; cls = 'rb-y';
+    desc = `Skor ${skor} — Risiko tinggi. Perlu pengawasan lebih ketat & pertimbangan rujukan.`;
+    action = '<ul><li>Konsultasi dokter SpOG</li><li>ANC di Puskesmas/RS minimal K4</li><li>Persiapkan rencana persalinan di RSUD</li><li>Stiker P4K + pendampingan keluarga</li></ul>';
+  } else {
+    title = '🔴 Risiko Sangat Tinggi (KRST)'; cls = 'rb-r';
+    desc = `Skor ${skor} — Risiko sangat tinggi. Wajib ditangani dokter SpOG di RS PONEK.`;
+    action = '<ul><li><strong>RUJUK</strong> ke RS PONEK/RSUD SEGERA</li><li>Koordinasi SISRUTE & ambulans</li><li>Dampingi ibu & keluarga</li><li>Dokumentasi rekam medis</li></ul>';
+  }
+  const el = document.getElementById('result-pr');
+  el.className = `rb ${cls} show`;
+  el.innerHTML = `<div class="rt">${title}</div><div class="sd-box"><div class="sd-num">${skor}</div><div class="sd-lbl">Skor Poedji Rochjati</div></div><div class="rd">${desc}</div><div class="ra"><strong>Tindak lanjut:</strong>${action}</div>`;
+}
+
+// ===== MAP REALTIME =====
+function hitungMAP() {
+  const s = parseFloat(document.getElementById('pe-sis').value)||0;
+  const d = parseFloat(document.getElementById('pe-dia').value)||0;
+  if (!s||!d) { document.getElementById('map-display').textContent='— mmHg'; document.getElementById('map-status').textContent='Masukkan tekanan darah untuk hitung MAP'; return; }
+  const map = Math.round((2*d + s) / 3);
+  document.getElementById('map-display').textContent = map + ' mmHg';
+  const cb = document.getElementById('pe-map-tinggi');
+  if (map > 90) {
+    document.getElementById('map-status').textContent = '⚠️ MAP >90 mmHg — risiko tinggi preeklampsia';
+    document.getElementById('map-display').style.color = 'var(--merah)';
+    cb.checked = true;
+  } else {
+    document.getElementById('map-status').textContent = '✅ MAP normal (≤90 mmHg)';
+    document.getElementById('map-display').style.color = 'var(--hijau)';
+    cb.checked = false;
+  }
+}
+
+// ===== SKRINING PE BUKU KIA =====
+function nilaiPEBukuKIA() {
+  const jmlSedang = document.querySelectorAll('.pe-sedang:checked').length;
+  const jmlTinggi = document.querySelectorAll('.pe-tinggi:checked').length;
+  const mapTinggi = document.getElementById('pe-map-tinggi').checked;
+  const protTinggi = document.getElementById('pe-prot-tinggi').checked;
+  const totalTinggi = jmlTinggi + (mapTinggi?1:0) + (protTinggi?1:0);
+
+  let title, desc, action, cls;
+
+  if (totalTinggi >= 1) {
+    title = '🔴 RISIKO TINGGI — Rujukan Terencana ke RS';
+    cls = 'rb-r';
+    desc = `Ditemukan <strong>${totalTinggi} faktor risiko tinggi</strong>${jmlSedang>0?` dan ${jmlSedang} risiko sedang`:''}. Sesuai Buku KIA 2024: pemeriksaan kehamilan, persalinan, dan nifas harus dilakukan di <strong>Rumah Sakit</strong>.`;
+    action = '<ul><li><strong>Rujukan terencana ke RS</strong> — tidak perlu menunggu inpartu</li><li>Konsultasi SpOG segera</li><li>Edukasi ibu & keluarga tanda bahaya</li><li>Monitor TD, proteinuria, kondisi janin ketat</li><li>Pertimbangkan profilaksis aspirin dosis rendah (150mg/hari) bila direkomendasikan SpOG</li></ul>';
+  } else if (jmlSedang >= 2) {
+    title = '🔴 RISIKO SEDANG ≥2 — Rujukan ke RS';
+    cls = 'rb-r';
+    desc = `Ditemukan <strong>${jmlSedang} faktor risiko sedang</strong>. Sesuai Buku KIA 2024: ibu hamil dirujuk bila ditemukan ≥2 risiko sedang.`;
+    action = '<ul><li>Rujuk ke Rumah Sakit untuk pemantauan lebih lanjut</li><li>Konsultasi SpOG</li><li>Monitor tekanan darah setiap kunjungan</li><li>Periksa proteinuria berkala</li><li>Edukasi tanda bahaya preeklampsia kepada ibu & keluarga</li></ul>';
+  } else if (jmlSedang === 1) {
+    title = '🟡 1 Faktor Risiko Sedang — Pemantauan Ketat';
+    cls = 'rb-y';
+    desc = `Ditemukan <strong>1 faktor risiko sedang</strong>. Belum memenuhi kriteria rujukan, namun perlu pemantauan lebih ketat.`;
+    action = '<ul><li>ANC lebih sering (setiap 2 minggu di trimester 2–3)</li><li>Ukur TD setiap kunjungan</li><li>Periksa proteinuria bila TD naik</li><li>Edukasi tanda bahaya: nyeri kepala, gangguan penglihatan, edema mendadak</li></ul>';
+  } else {
+    title = '🟢 Tidak Ditemukan Faktor Risiko PE';
+    cls = 'rb-g';
+    desc = 'Tidak ditemukan faktor risiko preeklampsia saat ini. Lanjutkan ANC rutin.';
+    action = '<ul><li>ANC sesuai jadwal 12T</li><li>Ukur TD setiap kunjungan</li><li>Edukasi tanda bahaya kehamilan</li></ul>';
+  }
+  const el = document.getElementById('result-pe');
+  el.className = `rb ${cls} show`;
+  el.innerHTML = `<div class="rt">${title}</div><div class="rd">${desc}</div><div class="ra"><strong>Tindak lanjut:</strong>${action}</div>`;
+}
+
+// ===== SKRINING DMG =====
+function nilaiDMG() {
+  const gdp = parseFloat(document.getElementById('gdp-val').value);
+  const gd2j = parseFloat(document.getElementById('gd2j-val').value);
+  if (!gdp || !gd2j) { alert('Mohon isi nilai GDP dan GD2JPP.'); return; }
+  let title, desc, action, cls;
+  const gdpAbnormal = gdp >= 92;
+  const gd2jAbnormal = gd2j >= 153;
+  if (gdpAbnormal || gd2jAbnormal) {
+    title = '🔴 Kemungkinan Diabetes Melitus Gestasional';
+    cls = 'rb-r';
+    desc = `GDP: <strong>${gdp} mg/dL</strong> ${gdpAbnormal?'(≥92 — abnormal ⚠️)':'(normal)'}  |  GD2JPP: <strong>${gd2j} mg/dL</strong> ${gd2jAbnormal?'(≥153 — abnormal ⚠️)':'(normal)'}. Nilai melebihi batas normal — perlu konfirmasi dokter.`;
+    action = '<ul><li>Rujuk ke dokter SpOG untuk konfirmasi diagnosis</li><li>Edukasi diet rendah gula & indeks glikemik rendah</li><li>Monitor kadar gula darah lebih ketat</li><li>Evaluasi risiko preeklampsia & BBLR</li><li>Pantau pertumbuhan janin dengan USG berkala</li></ul>';
+  } else {
+    title = '🟢 Hasil Normal — Bukan DMG';
+    cls = 'rb-g';
+    desc = `GDP: <strong>${gdp} mg/dL</strong> (normal &lt;92)  |  GD2JPP: <strong>${gd2j} mg/dL</strong> (normal &lt;153). Tidak ditemukan tanda Diabetes Melitus Gestasional.`;
+    action = '<ul><li>Lanjutkan ANC rutin</li><li>Edukasi pola makan seimbang & batasi gula</li><li>Ulangi skrining jika ada faktor risiko</li></ul>';
+  }
+  const el = document.getElementById('result-dmg');
+  el.className = `rb ${cls} show`;
+  el.innerHTML = `<div class="rt">${title}</div><div class="rd">${desc}</div><div class="ra"><strong>Tindak lanjut:</strong>${action}</div>`;
+}
+
+// ===== PE AKTIF =====
+function nilaiPE() {
+  const sis = parseFloat(document.getElementById('pe-sis2').value)||0;
+  const dia = parseFloat(document.getElementById('pe-dia2').value)||0;
+  const uk  = parseFloat(document.getElementById('pe-uk').value)||0;
+  const prot = parseInt(document.getElementById('pe-prot2').value);
+  const kep = document.getElementById('pe-kep').checked;
+  const epi = document.getElementById('pe-epi').checked;
+  const olg = document.getElementById('pe-olg').checked;
+  const kjg = document.getElementById('pe-kjg').checked;
+  let title, desc, action, cls;
+  if (kjg) {
+    title='🔴 EKLAMPSIA — KEGAWATDARURATAN'; cls='rb-r';
+    desc='Terdapat kejang pada ibu dengan hipertensi. Kondisi KEGAWATAN OBSTETRI yang mengancam jiwa.';
+    action='<ul><li>Bebaskan jalan napas, miringkan ke kiri</li><li>MgSO4 4g IV loading dose segera</li><li>O2 4–6 L/menit</li><li>RUJUK SEGERA ke RS PONEK</li><li>Pasang IV line 2 jalur</li></ul>';
+  } else if (sis>=160 || dia>=110 || kep || epi || olg) {
+    title='🔴 PREEKLAMPSIA BERAT'; cls='rb-r';
+    desc='TD sangat tinggi (≥160/110) atau disertai gejala berat. Penanganan segera di RS.';
+    action='<ul><li>MgSO4 sesuai protokol</li><li>Antihipertensi: Nifedipin 10mg oral</li><li>RUJUK ke RS PONEK</li><li>Pertimbangkan terminasi sesuai UK</li></ul>';
+  } else if (sis>=140 || dia>=90) {
+    if (prot>=2) { title='🟠 PREEKLAMPSIA'; cls='rb-o'; desc='TD ≥140/90 + proteinuria signifikan. Perlu rawat inap & observasi ketat.'; action='<ul><li>Rawat inap, pantau TD tiap 4 jam</li><li>Monitor proteinuria 24 jam</li><li>Konsultasi SpOG</li><li>Pertimbangkan MgSO4 profilaksis</li></ul>'; }
+    else if (uk<20) { title='🟡 HIPERTENSI KRONIK'; cls='rb-y'; desc='HT sebelum UK 20 minggu = hipertensi kronik, bukan preeklampsia.'; action='<ul><li>Konsultasi SpOG & SpPD</li><li>Evaluasi fungsi ginjal & jantung</li><li>Antihipertensi jika TD >150/100</li></ul>'; }
+    else { title='🟡 HIPERTENSI GESTASIONAL'; cls='rb-y'; desc='TD ≥140/90 setelah UK 20 minggu, tanpa proteinuria bermakna.'; action='<ul><li>Periksa ulang TD setelah 4 jam istirahat</li><li>Cek proteinuria & lab</li><li>Edukasi tanda bahaya PE</li></ul>'; }
+  } else {
+    title='🟢 Tekanan Darah Normal'; cls='rb-g';
+    desc='TD dalam batas normal. Lanjutkan ANC rutin & edukasi tanda bahaya.';
+    action='<ul><li>Lanjutkan ANC rutin</li><li>Edukasi tanda bahaya kehamilan</li><li>Diet rendah garam jika ada faktor risiko</li></ul>';
+  }
+  showRb('result-pe2', cls, title, desc, action);
+}
+
+
+// ===== STATUS GIZI KOMPREHENSIF =====
+// WHO 2006 Reference: [usia_bulan, median_L, SD_L, median_P, SD_P]
+// Format: {usia: [medianL, sdL, medianP, sdP]}
+
+// BB/U (Weight for Age)
+var BBU = {
+  0:[3.3,0.52,3.2,0.50],1:[4.5,0.66,4.2,0.63],2:[5.6,0.78,5.1,0.73],
+  3:[6.4,0.86,5.8,0.82],4:[7.0,0.92,6.4,0.88],5:[7.5,0.96,6.9,0.92],
+  6:[7.9,1.00,7.3,0.96],7:[8.3,1.04,7.6,1.00],8:[8.6,1.07,7.9,1.04],
+  9:[8.9,1.09,8.2,1.07],10:[9.2,1.12,8.5,1.09],11:[9.4,1.14,8.7,1.12],
+  12:[9.6,1.16,8.9,1.14],15:[10.3,1.22,9.6,1.22],18:[11.0,1.28,10.2,1.28],
+  21:[11.6,1.33,10.9,1.36],24:[12.2,1.38,11.5,1.43],
+  30:[13.3,1.48,12.7,1.58],36:[14.3,1.57,13.9,1.73],
+  42:[15.3,1.67,15.0,1.87],48:[16.3,1.77,16.1,2.02],
+  54:[17.3,1.88,17.2,2.17],60:[18.3,2.00,18.3,2.32]
+};
+
+// TB/U (Length/Height for Age)  
+var TBU = {
+  0:[49.9,1.89,49.1,1.86],3:[61.4,2.29,59.8,2.32],6:[67.6,2.40,65.7,2.43],
+  9:[72.0,2.52,70.1,2.67],12:[75.7,2.64,74.0,2.83],15:[79.1,2.75,77.5,2.97],
+  18:[82.3,2.86,80.7,3.10],21:[85.1,2.95,83.7,3.22],24:[87.8,3.04,86.4,3.33],
+  30:[92.7,3.19,91.2,3.52],36:[96.1,3.31,95.1,3.69],
+  42:[99.9,3.44,98.7,3.84],48:[103.3,3.56,102.7,4.00],
+  54:[107.0,3.68,106.7,4.16],60:[110.0,3.79,109.4,4.30]
+};
+
+// IMT/U reference medians (BMI for age) - simplified
+var IMTU = {
+  0:[13.4,1.44,13.3,1.41],3:[17.5,1.89,16.8,1.81],6:[17.3,1.87,16.6,1.81],
+  9:[16.7,1.78,16.0,1.75],12:[16.3,1.71,15.7,1.68],18:[16.0,1.68,15.4,1.68],
+  24:[15.7,1.63,15.2,1.66],36:[15.5,1.60,15.2,1.67],
+  48:[15.3,1.57,15.1,1.71],60:[15.3,1.57,15.2,1.79]
+};
+
+// LK/U (Head Circumference for Age)
+var LKU = {
+  0:[34.5,1.18,33.9,1.17],3:[40.0,1.23,39.1,1.18],6:[43.3,1.23,42.2,1.22],
+  9:[45.0,1.26,43.8,1.24],12:[46.5,1.29,45.1,1.27],15:[47.6,1.32,46.2,1.30],
+  18:[48.5,1.34,46.9,1.32],21:[49.3,1.37,47.8,1.35],24:[49.5,1.38,48.2,1.37],
+  30:[50.3,1.41,49.1,1.41],36:[50.9,1.44,49.6,1.44],
+  48:[52.0,1.49,50.8,1.51],60:[53.0,1.55,51.8,1.59]
+};
+
+function getRef(tbl, usia, jk) {
+  var keys = Object.keys(tbl).map(Number).sort((a,b)=>a-b);
+  var lo = keys[0], hi = keys[keys.length-1];
+  if(usia <= lo) { var d=tbl[lo]; return jk==='L'?[d[0],d[1]]:[d[2],d[3]]; }
+  if(usia >= hi) { var d=tbl[hi]; return jk==='L'?[d[0],d[1]]:[d[2],d[3]]; }
+  var lower=lo, upper=hi;
+  for(var i=0;i<keys.length-1;i++){
+    if(keys[i]<=usia && keys[i+1]>=usia){ lower=keys[i]; upper=keys[i+1]; break; }
+  }
+  if(lower===upper){ var d=tbl[lower]; return jk==='L'?[d[0],d[1]]:[d[2],d[3]]; }
+  var t=(usia-lower)/(upper-lower);
+  var dl=tbl[lower], du=tbl[upper];
+  if(jk==='L') return [dl[0]+(du[0]-dl[0])*t, dl[1]+(du[1]-dl[1])*t];
+  return [dl[2]+(du[2]-dl[2])*t, dl[3]+(du[3]-dl[3])*t];
+}
+
+function calcZ(val, median, sd) {
+  return Math.round(((val-median)/sd)*100)/100;
+}
+
+function zLabel(z, type) {
+  if(type==='BBU'){
+    if(z<-3) return ['Gizi Buruk','rb-r','⚠️ RUJUK segera ke Puskesmas/RS'];
+    if(z<-2) return ['Gizi Kurang','rb-o','Pantau intensif, PMT, edukasi gizi'];
+    if(z<=1) return ['Gizi Baik','rb-g','Pertahankan pola makan bergizi'];
+    if(z<=2) return ['Berisiko Gizi Lebih','rb-y','Evaluasi pola makan, kurangi makanan manis/berlemak'];
+    if(z<=3) return ['Gizi Lebih','rb-o','Konsultasi gizi, evaluasi asupan'];
+    return ['Obesitas','rb-r','Rujuk ke dokter/spesialis gizi'];
+  }
+  if(type==='TBU'){
+    if(z<-3) return ['Sangat Pendek (Severely Stunted)','rb-r','⚠️ RUJUK, intervensi gizi intensif'];
+    if(z<-2) return ['Pendek (Stunted)','rb-o','Intervensi gizi 1000HPK, pantau bulanan'];
+    if(z<=3) return ['Normal','rb-g','Pertahankan asupan gizi seimbang'];
+    return ['Tinggi','rb-b','Normal, pemantauan rutin'];
+  }
+  if(type==='IMTU'){
+    if(z<-3) return ['Sangat Kurus','rb-r','⚠️ RUJUK, PMT intensif'];
+    if(z<-2) return ['Kurus','rb-o','PMT, evaluasi asupan'];
+    if(z<=1) return ['Normal','rb-g','Pertahankan pola makan bergizi'];
+    if(z<=2) return ['Berisiko Gemuk','rb-y','Evaluasi pola makan'];
+    if(z<=3) return ['Gemuk','rb-o','Konsultasi gizi'];
+    return ['Obesitas','rb-r','Rujuk dokter/spesialis gizi'];
+  }
+  if(type==='LKU'){
+    if(z<-2) return ['Mikrosefali','rb-r','⚠️ RUJUK ke dokter anak/SpA'];
+    if(z<=2) return ['Normal','rb-g','Pertahankan stimulasi optimal'];
+    return ['Makrosefali','rb-o','Evaluasi lebih lanjut oleh dokter anak'];
+  }
+  return ['Normal','rb-g',''];
+}
+
+function hitungStatusGizi() {
+  var nama = document.getElementById('st-nama').value||'Anak';
+  var jk = document.getElementById('st-jk').value;
+  var usia = parseFloat(document.getElementById('st-umur').value);
+  var bb = parseFloat(document.getElementById('st-bb').value);
+  var tb = parseFloat(document.getElementById('st-tb').value);
+  var lk = parseFloat(document.getElementById('st-lk').value);
+  var lila = parseFloat(document.getElementById('st-lila').value);
+  var lilaibu = parseFloat(document.getElementById('st-lilaibu').value);
+
+  if(isNaN(usia)||usia<0||usia>60){alert('Masukkan usia 0-60 bulan');return;}
+
+  var html = '<div style="font-weight:700;font-size:15px;color:#1a6b3c;margin-bottom:12px;">📊 Hasil Status Gizi: '+nama+' ('+usia+' bulan, '+(jk==='L'?'Laki-laki':'Perempuan')+')</div>';
+
+  // BB/U
+  if(!isNaN(bb)&&bb>0){
+    var ref=getRef(BBU,usia,jk), z=calcZ(bb,ref[0],ref[1]);
+    var lb=zLabel(z,'BBU');
+    html += '<div class="rb '+lb[1]+' show" style="margin-bottom:8px;">';
+    html += '<div class="rt">⚖️ BB/U (Berat Badan/Umur): Z-Score = '+z+'</div>';
+    html += '<div class="rd"><b>'+lb[0]+'</b> | BB: '+bb+'kg | Median: '+ref[0].toFixed(1)+'kg</div>';
+    html += '<div class="ra">'+lb[2]+'</div></div>';
+  }
+
+  // TB/U
+  if(!isNaN(tb)&&tb>0){
+    var ref=getRef(TBU,usia,jk), z=calcZ(tb,ref[0],ref[1]);
+    var lb=zLabel(z,'TBU');
+    html += '<div class="rb '+lb[1]+' show" style="margin-bottom:8px;">';
+    html += '<div class="rt">📏 TB/U (Tinggi Badan/Umur): Z-Score = '+z+'</div>';
+    html += '<div class="rd"><b>'+lb[0]+'</b> | TB: '+tb+'cm | Median: '+ref[0].toFixed(1)+'cm</div>';
+    html += '<div class="ra">'+lb[2]+'</div></div>';
+  }
+
+  // IMT/U
+  if(!isNaN(bb)&&!isNaN(tb)&&bb>0&&tb>0){
+    var imt = bb/((tb/100)*(tb/100));
+    imt = Math.round(imt*10)/10;
+    var ref=getRef(IMTU,usia,jk), z=calcZ(imt,ref[0],ref[1]);
+    var lb=zLabel(z,'IMTU');
+    html += '<div class="rb '+lb[1]+' show" style="margin-bottom:8px;">';
+    html += '<div class="rt">📐 IMT/U (Indeks Massa Tubuh/Umur): Z-Score = '+z+'</div>';
+    html += '<div class="rd"><b>'+lb[0]+'</b> | IMT: '+imt+' kg/m² | Median: '+ref[0].toFixed(1)+'</div>';
+    html += '<div class="ra">'+lb[2]+'</div></div>';
+  }
+
+  // LK/U
+  if(!isNaN(lk)&&lk>0&&usia<=60){
+    var ref=getRef(LKU,usia,jk), z=calcZ(lk,ref[0],ref[1]);
+    var lb=zLabel(z,'LKU');
+    html += '<div class="rb '+lb[1]+' show" style="margin-bottom:8px;">';
+    html += '<div class="rt">🔵 LK/U (Lingkar Kepala/Umur): Z-Score = '+z+'</div>';
+    html += '<div class="rd"><b>'+lb[0]+'</b> | LK: '+lk+'cm | Median: '+ref[0].toFixed(1)+'cm</div>';
+    html += '<div class="ra">'+lb[2]+'</div></div>';
+  }
+
+  // LILA Anak
+  if(!isNaN(lila)&&lila>0){
+    var lilaStatus, lilaClass, lilaAct;
+    if(lila<11.5){lilaStatus='SAM — Gizi Buruk Akut';lilaClass='rb-r';lilaAct='⚠️ RUJUK SEGERA ke Puskesmas/RS, PMT intensif';}
+    else if(lila<12.5){lilaStatus='MAM — Gizi Kurang Akut';lilaClass='rb-o';lilaAct='PMT lokal, pantau 2 minggu, edukasi MPASI';}
+    else{lilaStatus='Normal';lilaClass='rb-g';lilaAct='Pertahankan pola makan bergizi seimbang';}
+    html += '<div class="rb '+lilaClass+' show" style="margin-bottom:8px;">';
+    html += '<div class="rt">💪 LILA Anak: '+lila+' cm</div>';
+    html += '<div class="rd"><b>'+lilaStatus+'</b> | Batas SAM: &lt;11.5cm | MAM: 11.5-12.4cm | Normal: ≥12.5cm</div>';
+    html += '<div class="ra">'+lilaAct+'</div></div>';
+  }
+
+  // LILA Ibu
+  if(!isNaN(lilaibu)&&lilaibu>0){
+    var lilaIbuStatus, lilaIbuClass, lilaIbuAct;
+    if(lilaibu<23.5){lilaIbuStatus='KEK — Kurang Energi Kronik';lilaIbuClass='rb-r';lilaIbuAct='⚠️ PMT bumil/busui, konsultasi gizi, monitor kehamilan ketat';}
+    else{lilaIbuStatus='Normal';lilaIbuClass='rb-g';lilaIbuAct='Pertahankan asupan gizi seimbang selama hamil/menyusui';}
+    html += '<div class="rb '+lilaIbuClass+' show" style="margin-bottom:8px;">';
+    html += '<div class="rt">👩 LILA Ibu: '+lilaibu+' cm</div>';
+    html += '<div class="rd"><b>'+lilaIbuStatus+'</b> | Batas KEK: &lt;23.5cm</div>';
+    html += '<div class="ra">'+lilaIbuAct+'</div></div>';
+  }
+
+  var el = document.getElementById('result-gizi-lengkap');
+  el.innerHTML = html;
+  el.style.display = 'block';
+  el.className = 'show';
+}
+
+// ===== KPSP CALCULATOR =====
+var kpspData = {
+  3: [
+    {q:'Pada waktu bayi telentang, apakah ia dapat mengikuti gerakan anda dengan menggerakkan kepalanya dari kiri ke kanan?',d:'MK'},
+    {q:'Dapatkah bayi mempertahankan posisi kepalanya saat ditarik perlahan ke posisi duduk?',d:'MK'},
+    {q:'Saat diletakkan benda di tangannya, apakah bayi dapat menggenggam beberapa detik?',d:'MH'},
+    {q:'Apakah bayi memandang wajah anda dan mengikuti gerakan anda?',d:'MH'},
+    {q:'Apakah bayi bereaksi terhadap suara keras yang tiba-tiba (terkejut)?',d:'BB'},
+    {q:'Apakah bayi bersuara selain menangis (misalnya mengoceh)?',d:'BB'},
+    {q:'Apakah bayi tersenyum ketika anda berbicara atau tersenyum padanya?',d:'SK'},
+    {q:'Dapatkah bayi mengangkat kepalanya setinggi 45° saat tengkurap?',d:'MK'},
+    {q:'Apakah bayi mengikuti gerakan benda dengan matanya ke kiri dan ke kanan?',d:'MH'},
+    {q:'Apakah bayi tampak senang saat anda bermain atau berbicara dengannya?',d:'SK'}
+  ],
+  6: [
+    {q:'Dapatkah bayi membalikkan badan dari telentang ke tengkurap?',d:'MK'},
+    {q:'Dapatkah bayi mempertahankan posisi kepala tegak stabil saat didudukkan?',d:'MK'},
+    {q:'Dapatkah bayi menggapai dan meraih mainan yang berada dalam jangkauannya?',d:'MH'},
+    {q:'Dapatkah bayi memindahkan benda dari satu tangan ke tangan yang lain?',d:'MH'},
+    {q:'Apakah bayi menoleh ke arah suara yang didengarnya?',d:'BB'},
+    {q:'Apakah bayi mengeluarkan suara berceloteh seperti ba-ba, ma-ma, pa-pa?',d:'BB'},
+    {q:'Apakah bayi mengenali wajah anggota keluarga dan tersenyum kepada mereka?',d:'SK'},
+    {q:'Apakah bayi senang dipangku dan berinteraksi dengan orang yang dikenalnya?',d:'SK'},
+    {q:'Dapatkah bayi duduk dengan bantuan tanpa kepalanya terjatuh?',d:'MK'},
+    {q:'Dapatkah bayi mengambil benda kecil dengan seluruh telapak tangannya?',d:'MH'}
+  ],
+  9: [
+    {q:'Dapatkah bayi duduk sendiri (tanpa bantuan) selama 10 detik atau lebih?',d:'MK'},
+    {q:'Dapatkah bayi merangkak maju minimal 2 meter?',d:'MK'},
+    {q:'Dapatkah bayi mengambil benda kecil dengan ibu jari dan telunjuk (pincer grasp)?',d:'MH'},
+    {q:'Dapatkah bayi memukulkan 2 benda bersama-sama?',d:'MH'},
+    {q:'Apakah bayi merespons ketika namanya dipanggil?',d:'BB'},
+    {q:'Apakah bayi berceloteh menggunakan kata-kata seperti mama, papa, dada meski belum bermakna?',d:'BB'},
+    {q:'Dapatkah bayi bermain cilukba?',d:'SK'},
+    {q:'Apakah bayi menunjukkan kesenangan/ketidaksenangan terhadap situasi tertentu?',d:'SK'},
+    {q:'Dapatkah bayi berdiri dengan berpegangan?',d:'MK'},
+    {q:'Dapatkah bayi minum dari cangkir/gelas yang anda pegangi?',d:'SK'}
+  ],
+  12: [
+    {q:'Dapatkah anak berdiri sendiri tanpa berpegangan selama 2 detik?',d:'MK'},
+    {q:'Dapatkah anak berjalan dengan berpegangan pada perabot atau dinding?',d:'MK'},
+    {q:'Dapatkah anak mengucapkan 1-2 kata yang bermakna (selain mama/papa)?',d:'BB'},
+    {q:'Apakah anak merespons perintah sederhana seperti "tidak" atau "sini"?',d:'BB'},
+    {q:'Dapatkah anak memasukkan benda kecil ke dalam wadah?',d:'MH'},
+    {q:'Dapatkah anak menunjuk benda atau bagian tubuh yang diminta?',d:'MH'},
+    {q:'Dapatkah anak minum dari cangkir sendiri?',d:'SK'},
+    {q:'Apakah anak meniru tindakan orang dewasa (seperti melambaikan tangan)?',d:'SK'},
+    {q:'Dapatkah anak membalik halaman buku (meski lebih dari 1 halaman)?',d:'MH'},
+    {q:'Apakah anak menunjukkan rasa ingin tahu dengan menjelajahi lingkungannya?',d:'SK'}
+  ],
+  15: [
+    {q:'Dapatkah anak berjalan sendiri tanpa jatuh?',d:'MK'},
+    {q:'Dapatkah anak naik tangga/kursi dengan merangkak?',d:'MK'},
+    {q:'Dapatkah anak mengucapkan 3-5 kata yang bermakna?',d:'BB'},
+    {q:'Apakah anak dapat menunjuk 1-2 bagian tubuh ketika diminta?',d:'BB'},
+    {q:'Dapatkah anak menumpuk 2 balok/benda?',d:'MH'},
+    {q:'Dapatkah anak menggunakan sendok meski masih belepotan?',d:'MH'},
+    {q:'Apakah anak bermain dengan anak lain (meski hanya berdampingan)?',d:'SK'},
+    {q:'Apakah anak menunjuk benda yang diinginkan?',d:'SK'},
+    {q:'Dapatkah anak mendorong mainan roda seperti truk/mobil-mobilan?',d:'MK'},
+    {q:'Apakah anak mencoret-coret kertas dengan pensil/crayon?',d:'MH'}
+  ],
+  18: [
+    {q:'Dapatkah anak berlari meski masih sering jatuh?',d:'MK'},
+    {q:'Dapatkah anak menaiki tangga dengan berpegangan (satu tangan)?',d:'MK'},
+    {q:'Dapatkah anak mengucapkan 5-10 kata yang bermakna?',d:'BB'},
+    {q:'Apakah anak dapat menunjuk gambar di buku ketika disebutkan namanya?',d:'BB'},
+    {q:'Dapatkah anak menumpuk 3-4 balok?',d:'MH'},
+    {q:'Dapatkah anak menggunakan sendok dengan baik (sedikit tumpah)?',d:'MH'},
+    {q:'Apakah anak bermain pura-pura (misalnya menelepon dengan mainan)?',d:'SK'},
+    {q:'Apakah anak memeluk atau menunjukkan kasih sayang kepada boneka/mainan?',d:'SK'},
+    {q:'Dapatkah anak menendang bola ke depan?',d:'MK'},
+    {q:'Apakah anak menunjukkan minat terhadap anak lain dan ingin bermain bersama?',d:'SK'}
+  ],
+  21: [
+    {q:'Dapatkah anak berlari tanpa sering jatuh?',d:'MK'},
+    {q:'Dapatkah anak melompat di tempat (kedua kaki terangkat)?',d:'MK'},
+    {q:'Dapatkah anak mengucapkan kalimat 2 kata yang bermakna (misal: minta minum)?',d:'BB'},
+    {q:'Apakah anak dapat menunjuk 4-5 bagian tubuh ketika diminta?',d:'BB'},
+    {q:'Dapatkah anak menumpuk 5-6 balok tanpa jatuh?',d:'MH'},
+    {q:'Dapatkah anak membuka halaman buku satu per satu?',d:'MH'},
+    {q:'Apakah anak mulai bermain peran sederhana (masak-masakan, rumah-rumahan)?',d:'SK'},
+    {q:'Apakah anak dapat melepas pakaian sendiri (misal: kaos kaki, celana)?',d:'SK'},
+    {q:'Dapatkah anak memanjat kursi dan duduk dengan benar?',d:'MK'},
+    {q:'Apakah anak menunjukkan empati (mendekati teman yang menangis)?',d:'SK'}
+  ],
+  24: [
+    {q:'Dapatkah anak berjalan naik tangga sendiri (memegang pagar), satu kaki tiap anak tangga?',d:'MK'},
+    {q:'Dapatkah anak berlari dengan baik tanpa sering jatuh?',d:'MK'},
+    {q:'Dapatkah anak mengucapkan kalimat yang terdiri dari 2-3 kata?',d:'BB'},
+    {q:'Dapatkah anak menyebutkan nama benda-benda yang ditunjuk?',d:'BB'},
+    {q:'Dapatkah anak meniru membuat garis lurus?',d:'MH'},
+    {q:'Dapatkah anak menumpuk 6 balok atau lebih?',d:'MH'},
+    {q:'Apakah anak bermain bersama anak lain dan mau berbagi mainan?',d:'SK'},
+    {q:'Apakah anak dapat menyebut nama lengkap dirinya ketika ditanya?',d:'BB'},
+    {q:'Dapatkah anak melompat dengan kedua kaki?',d:'MK'},
+    {q:'Apakah anak makan sendiri tanpa terlalu banyak tumpah?',d:'SK'}
+  ],
+  30: [
+    {q:'Dapatkah anak berdiri dengan satu kaki selama 2 detik tanpa berpegangan?',d:'MK'},
+    {q:'Dapatkah anak melompat dengan dua kaki secara bersamaan ke depan?',d:'MK'},
+    {q:'Dapatkah anak menyebutkan nama lengkap tanpa dibantu?',d:'BB'},
+    {q:'Apakah anak dapat berbicara dengan kalimat yang terdiri dari 4-5 kata?',d:'BB'},
+    {q:'Dapatkah anak meniru membuat lingkaran?',d:'MH'},
+    {q:'Dapatkah anak meniru membuat garis silang (+)?',d:'MH'},
+    {q:'Apakah anak bermain dengan anak lain secara interaktif (bukan hanya berdampingan)?',d:'SK'},
+    {q:'Apakah anak mau membantu pekerjaan rumah sederhana (membereskan mainan)?',d:'SK'},
+    {q:'Dapatkah anak melempar bola ke arah yang dituju?',d:'MK'},
+    {q:'Apakah anak mengerti konsep "milikku" dan "milikmu"?',d:'SK'}
+  ],
+  36: [
+    {q:'Dapatkah anak berdiri dengan satu kaki tanpa berpegangan selama 5 detik?',d:'MK'},
+    {q:'Dapatkah anak naik-turun tangga tanpa berpegangan, bergantian kaki?',d:'MK'},
+    {q:'Dapatkah anak bercerita tentang pengalamannya dengan kalimat sederhana?',d:'BB'},
+    {q:'Apakah anak mengerti dan dapat menjawab pertanyaan "Mengapa...?"',d:'BB'},
+    {q:'Dapatkah anak menggambar lingkaran yang bisa dikenali?',d:'MH'},
+    {q:'Dapatkah anak membangun menara dari 8 balok atau lebih?',d:'MH'},
+    {q:'Apakah anak bermain peran sosial yang lebih kompleks (dokter-dokteran, memasak)?',d:'SK'},
+    {q:'Apakah anak mau menggunakan toilet/WC sendiri (siang hari)?',d:'SK'},
+    {q:'Dapatkah anak melompat dengan satu kaki (engklek)?',d:'MK'},
+    {q:'Apakah anak mau menunggu giliran dalam permainan?',d:'SK'}
+  ],
+  42: [
+    {q:'Dapatkah anak berdiri satu kaki selama 6 detik tanpa berpegangan?',d:'MK'},
+    {q:'Dapatkah anak melompat-lompat dengan satu kaki beberapa kali?',d:'MK'},
+    {q:'Dapatkah anak menyebutkan 4 warna dengan benar?',d:'BB'},
+    {q:'Apakah anak dapat bercerita tentang suatu kejadian dengan urutan yang logis?',d:'BB'},
+    {q:'Dapatkah anak menggambar orang (kepala, badan, kaki)?',d:'MH'},
+    {q:'Dapatkah anak memotong kertas dengan gunting (meski tidak rapi)?',d:'MH'},
+    {q:'Apakah anak bermain kooperatif dengan aturan sederhana?',d:'SK'},
+    {q:'Apakah anak dapat berpakaian sendiri dengan bantuan minimal?',d:'SK'},
+    {q:'Dapatkah anak menangkap bola dengan 2 tangan?',d:'MK'},
+    {q:'Apakah anak mengerti konsep jumlah sederhana (satu, banyak, sedikit)?',d:'BB'}
+  ],
+  48: [
+    {q:'Dapatkah anak melompat dengan satu kaki 4-5 kali berturut-turut?',d:'MK'},
+    {q:'Dapatkah anak berjalan mengikuti garis lurus tanpa menyimpang?',d:'MK'},
+    {q:'Dapatkah anak menyebutkan nama minimal 4 binatang yang ditunjuk gambarnya?',d:'BB'},
+    {q:'Apakah anak dapat menyebutkan kegunaannya benda (misal: pensil untuk menulis)?',d:'BB'},
+    {q:'Dapatkah anak mengikuti garis putus-putus untuk menghubungkan gambar?',d:'MH'},
+    {q:'Dapatkah anak memegang pensil dengan benar (bukan digenggam)?',d:'MH'},
+    {q:'Apakah anak bermain kooperatif dengan teman sebaya dengan aturan yang jelas?',d:'SK'},
+    {q:'Apakah anak dapat berpakaian dan melepas pakaian sendiri tanpa bantuan?',d:'SK'},
+    {q:'Dapatkah anak melempar dan menangkap bola kecil dengan benar?',d:'MK'},
+    {q:'Apakah anak mengerti dan dapat menyebutkan warna minimal 4 warna?',d:'BB'}
+  ],
+  54: [
+    {q:'Dapatkah anak berjalan pada ujung jari kaki selama 3 langkah?',d:'MK'},
+    {q:'Dapatkah anak berlari dan berbelok tanpa mengurangi kecepatan?',d:'MK'},
+    {q:'Dapatkah anak menyebutkan nama hari dalam seminggu?',d:'BB'},
+    {q:'Apakah anak dapat menceritakan kembali cerita pendek dengan urutan yang benar?',d:'BB'},
+    {q:'Dapatkah anak meniru menggambar persegi (kotak)?',d:'MH'},
+    {q:'Dapatkah anak menulis/meniru angka 1 dan 2?',d:'MH'},
+    {q:'Apakah anak bermain dalam kelompok dan menerima aturan permainan?',d:'SK'},
+    {q:'Apakah anak membantu membereskan meja makan atau merapikan mainan?',d:'SK'},
+    {q:'Dapatkah anak meniti papan titian selebar 20 cm tanpa jatuh?',d:'MK'},
+    {q:'Apakah anak mengerti konsep lebih banyak/lebih sedikit dalam jumlah?',d:'BB'}
+  ],
+  60: [
+    {q:'Dapatkah anak melompat-lompat dengan satu kaki bergantian?',d:'MK'},
+    {q:'Dapatkah anak berjalan mundur 5 langkah tanpa jatuh?',d:'MK'},
+    {q:'Dapatkah anak menyebutkan nama lengkap, usia, dan nama kota tempat tinggalnya?',d:'BB'},
+    {q:'Apakah anak dapat bercerita tentang pengalaman sekolah/bermain dengan runtut?',d:'BB'},
+    {q:'Dapatkah anak menggambar orang dengan 6 bagian tubuh?',d:'MH'},
+    {q:'Dapatkah anak menulis namanya sendiri (huruf kapital)?',d:'MH'},
+    {q:'Apakah anak bermain kelompok dengan aturan dan menerima kalah?',d:'SK'},
+    {q:'Apakah anak dapat makan menggunakan sendok dan garpu dengan benar?',d:'SK'},
+    {q:'Dapatkah anak menangkap bola kecil dengan satu tangan?',d:'MK'},
+    {q:'Apakah anak mengerti konsep penjumlahan dan pengurangan sederhana?',d:'BB'}
+  ]
+};
+
+function loadKPSP() {
+  var usia = parseInt(document.getElementById('kpsp-usia').value);
+  var container = document.getElementById('kpsp-container');
+  document.getElementById('result-kpsp').style.display='none';
+  if(!usia || !kpspData[usia]) { container.innerHTML=''; return; }
+  var qs = kpspData[usia];
+  var html = '<div style="background:#e8f5ee;border-radius:10px;padding:12px;margin:10px 0;">';
+  html += '<div style="font-size:12px;font-weight:700;color:#1a6b3c;margin-bottom:10px;">📋 KPSP '+usia+' Bulan — Jawab YA atau TIDAK untuk setiap pertanyaan:</div>';
+  html += '<div style="font-size:10px;color:#5a7a65;margin-bottom:8px;">MK=Motorik Kasar | MH=Motorik Halus | BB=Bicara-Bahasa | SK=Sosialisasi-Kemandirian</div>';
+  for(var i=0;i<qs.length;i++){
+    html += '<div style="background:#fff;border-radius:8px;padding:10px;margin-bottom:7px;border:1px solid #c5e8d4;">';
+    html += '<div style="font-size:12px;margin-bottom:6px;"><b>'+(i+1)+'.</b> ['+qs[i].d+'] '+qs[i].q+'</div>';
+    html += '<div style="display:flex;gap:8px;">';
+    html += '<button onclick="setKPSP(this,1)" data-idx="'+i+'" data-val="1" style="flex:1;padding:7px;border-radius:8px;border:2px solid #c5e8d4;background:#f5faf7;font-size:12px;font-weight:600;color:#1a6b3c;cursor:pointer;">✅ Ya</button>';
+    html += '<button onclick="setKPSP(this,0)" data-idx="'+i+'" data-val="0" style="flex:1;padding:7px;border-radius:8px;border:2px solid #f5c6c0;background:#fef9f9;font-size:12px;font-weight:600;color:#c0392b;cursor:pointer;">❌ Tidak</button>';
+    html += '</div></div>';
+  }
+  html += '<button class="btn" onclick="hitungKPSP('+usia+')" style="margin-top:8px;">🎯 Hitung Skor KPSP</button>';
+  html += '</div>';
+  container.innerHTML = html;
+  window._kpspAnswers = new Array(10).fill(null);
+}
+
+function setKPSP(btn, val) {
+  var idx = parseInt(btn.getAttribute('data-idx'));
+  if(!window._kpspAnswers) window._kpspAnswers = new Array(10).fill(null);
+  window._kpspAnswers[idx] = val;
+  // Update styling
+  var parent = btn.parentNode;
+  var btns = parent.querySelectorAll('button');
+  btns.forEach(function(b){
+    if(parseInt(b.getAttribute('data-val'))===val){
+      b.style.background = val===1?'#1a6b3c':'#c0392b';
+      b.style.color = '#fff';
+      b.style.borderColor = val===1?'#1a6b3c':'#c0392b';
+    } else {
+      b.style.background = val===1?'#fef9f9':'#f5faf7';
+      b.style.color = val===1?'#c0392b':'#1a6b3c';
+      b.style.borderColor = val===1?'#f5c6c0':'#c5e8d4';
+    }
+  });
+}
+
+function hitungKPSP(usia) {
+  if(!window._kpspAnswers) { alert('Jawab semua pertanyaan terlebih dahulu!'); return; }
+  var nullIdx = window._kpspAnswers.indexOf(null);
+  if(nullIdx !== -1) { alert('Pertanyaan nomor '+(nullIdx+1)+' belum dijawab!'); return; }
+  
+  var skor = window._kpspAnswers.reduce(function(a,b){return a+(b||0);},0);
+  var qs = kpspData[usia];
+  
+  // Hitung per domain
+  var mk=0,mh=0,bb=0,sk=0,mk_t=0,mh_t=0,bb_t=0,sk_t=0;
+  for(var i=0;i<qs.length;i++){
+    var d=qs[i].d, v=window._kpspAnswers[i];
+    if(d==='MK'){mk+=v;mk_t++;}else if(d==='MH'){mh+=v;mh_t++;}
+    else if(d==='BB'){bb+=v;bb_t++;}else if(d==='SK'){sk+=v;sk_t++;}
+  }
+  
+  var status, cls, tindak, warna;
+  if(skor>=9){
+    status='S — Sesuai Perkembangan'; cls='rb-g'; warna='#27ae60';
+    tindak='<ul><li>Puji anak dan orang tua atas perkembangan yang baik</li><li>Teruskan stimulasi sesuai usia</li><li>Jadwalkan KPSP berikutnya sesuai usia (setiap 3-6 bulan)</li><li>Lengkapi imunisasi sesuai jadwal</li></ul>';
+  } else if(skor>=7){
+    status='M — Meragukan'; cls='rb-y'; warna='#d4ac0d';
+    tindak='<ul><li>Berikan stimulasi intensif selama 2 minggu</li><li>Ulangi KPSP setelah 2 minggu</li><li>Cari kemungkinan penyakit yang menghambat perkembangan</li><li>Jika hasil tetap M, rujuk ke Puskesmas/dokter anak</li></ul>';
+  } else {
+    status='P — Kemungkinan Ada Penyimpangan'; cls='rb-r'; warna='#c0392b';
+    tindak='<ul><li>⚠️ <b>RUJUK ke dokter anak (SpA) atau Puskesmas</b></li><li>Jelaskan kepada orang tua dengan empati dan tidak menakutkan</li><li>Cari faktor risiko: penyakit, gizi kurang, stimulasi kurang</li><li>Intervensi dini sangat penting untuk prognosis lebih baik</li></ul>';
+  }
+  
+  var el = document.getElementById('result-kpsp');
+  el.className = cls+' show';
+  el.innerHTML = '<div class="rt" style="font-size:16px;">🎯 Skor KPSP: '+skor+'/10 — '+status+'</div>';
+  el.innerHTML += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0;">';
+  el.innerHTML += '<div style="background:rgba(0,0,0,.06);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:18px;font-weight:700;">'+mk+'/'+mk_t+'</div><div style="font-size:10px;">Motorik Kasar</div></div>';
+  el.innerHTML += '<div style="background:rgba(0,0,0,.06);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:18px;font-weight:700;">'+mh+'/'+mh_t+'</div><div style="font-size:10px;">Motorik Halus</div></div>';
+  el.innerHTML += '<div style="background:rgba(0,0,0,.06);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:18px;font-weight:700;">'+bb+'/'+bb_t+'</div><div style="font-size:10px;">Bicara-Bahasa</div></div>';
+  el.innerHTML += '<div style="background:rgba(0,0,0,.06);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:18px;font-weight:700;">'+sk+'/'+sk_t+'</div><div style="font-size:10px;">Sosialisasi-Kemandirian</div></div>';
+  el.innerHTML += '</div>';
+  el.innerHTML += '<div class="ra"><strong>Tindak Lanjut:</strong>'+tindak+'</div>';
+  el.style.display='block';
+}
+
+// ===== STUNTING =====
+function hitungStunting() {
+  const umur = parseFloat(document.getElementById('st-umur').value);
+  const tb   = parseFloat(document.getElementById('st-tb').value);
+  const bb   = parseFloat(document.getElementById('st-bb').value);
+  const jk   = document.getElementById('st-jk').value;
+  const lila = parseFloat(document.getElementById('st-lila').value);
+  if (!umur||!tb||!bb) { alert('Mohon isi umur, tinggi badan, dan berat badan.'); return; }
+  const medianL=[49.9,54.7,58.4,61.4,63.9,65.9,67.6,69.2,70.6,72.0,73.3,74.5,75.7,76.9,78.0,79.1,80.2,81.2,82.3,83.2,84.2,85.1,86.0,86.9,87.8,88.7,89.6,90.4,91.2,92.1,92.9,93.7,94.4,95.2,95.9,96.7,97.4,98.1,98.7,99.4,100.1,100.7,101.4,102.0,102.6,103.3,103.9,104.5,105.1,105.7,106.2,106.8,107.4,107.9,108.5,109.0,109.5,110.0,110.5,111.0,111.5];
+  const medianP=[49.1,53.7,57.1,59.8,62.1,64.0,65.7,67.3,68.7,70.1,71.5,72.8,74.0,75.2,76.4,77.5,78.6,79.7,80.7,81.7,82.7,83.7,84.6,85.5,86.4,87.2,88.0,88.9,89.7,90.5,91.2,91.9,92.7,93.4,94.1,94.8,95.4,96.1,96.7,97.4,98.0,98.7,99.2,99.9,100.4,101.0,101.5,102.1,102.7,103.2,103.7,104.2,104.8,105.3,105.8,106.2,106.7,107.2,107.6,108.1,108.5];
+  const arr = jk==='L' ? medianL : medianP;
+  const idx = Math.min(Math.round(umur), 60);
+  const median = arr[idx] || 87;
+  const sd = 3.5;
+  const z = (tb - median) / sd;
+  let title, desc, action, cls;
+  if (z < -3) { title='🔴 Sangat Pendek (Severe Stunting)'; cls='rb-r'; desc=`Z-score TB/U ≈ ${z.toFixed(1)} SD. Severe stunting — perlu penanganan gizi intensif segera.`; action='<ul><li>Rujuk ke dokter anak/ahli gizi</li><li>PMT pemulihan intensif</li><li>Periksa penyakit penyerta (TB, infeksi)</li><li>Suplementasi zinc, vitamin A, Fe</li><li>Lapor Puskesmas/TPPS kecamatan</li></ul>'; }
+  else if (z < -2) { title='🟠 Pendek (Stunting)'; cls='rb-o'; desc=`Z-score TB/U ≈ ${z.toFixed(1)} SD. Stunting — perlu intervensi gizi & pemantauan ketat.`; action='<ul><li>PMT berbasis pangan lokal (ATIKA)</li><li>Tingkatkan protein hewani harian</li><li>Pastikan imunisasi lengkap</li><li>Pantau pertumbuhan tiap bulan</li><li>Edukasi MPASI & gizi keluarga</li></ul>'; }
+  else { title='🟢 Normal'; cls='rb-g'; desc=`Z-score TB/U ≈ ${z.toFixed(1)} SD. Tinggi badan sesuai usia. Pertahankan gizi seimbang.`; action='<ul><li>Lanjutkan pemantauan posyandu rutin</li><li>Pertahankan gizi seimbang & ASI</li></ul>'; }
+  let lilaNote = '';
+  if (lila > 0 && lila < 23.5) lilaNote = `<br>⚠️ <strong>LILA ibu ${lila} cm &lt; 23.5 cm (KEK)</strong> — faktor risiko stunting pada bayi.`;
+  showRb('result-stunting', cls, title, desc + lilaNote, action);
+}
+
+// ===== HITUNG USIA ANAK =====
+function hitungUsiaAnak() {
+  const val = document.getElementById('tl-anak').value;
+  if (!val) return;
+  const tl = new Date(val);
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  if (tl > today) { showRb('result-usia-anak','rb-r','⚠️ Tanggal tidak valid','Tanggal lahir tidak boleh lebih dari hari ini.',''); return; }
+
+  const totalHari = Math.floor((today - tl) / 86400000);
+  let tahun = today.getFullYear() - tl.getFullYear();
+  let bulanSisa = today.getMonth() - tl.getMonth();
+  let hariSisa2 = today.getDate() - tl.getDate();
+  if (hariSisa2 < 0) { bulanSisa--; }
+  if (bulanSisa < 0) { tahun--; bulanSisa += 12; }
+  const totalBulan = tahun * 12 + bulanSisa;
+
+  document.getElementById('result-usia-anak').style.display = 'none';
+  const tr = document.getElementById('usia-anak-tracker');
+  tr.style.display = 'block';
+
+  let kategori = '', milestoneData = null;
+  if (totalBulan < 1) { kategori = 'Neonatus (0–28 hari)'; }
+  else if (totalBulan < 3) { kategori = 'Bayi Muda (1–2 bulan)'; }
+  else if (totalBulan < 6) { kategori = 'Bayi (3–5 bulan)'; }
+  else if (totalBulan < 12) { kategori = 'Bayi (6–11 bulan)'; }
+  else if (totalBulan < 24) { kategori = 'Batita (12–23 bulan)'; }
+  else if (totalBulan < 36) { kategori = 'Batita (24–35 bulan)'; }
+  else if (totalBulan < 60) { kategori = 'Balita (36–59 bulan)'; }
+  else { kategori = 'Anak Usia Sekolah (≥5 tahun)'; }
+
+  document.getElementById('ua-umur-teks').textContent = `${totalBulan} bulan`;
+  document.getElementById('ua-umur-detail').textContent = `${tahun} tahun ${bulanSisa} bulan`;
+  document.getElementById('ua-kategori').textContent = kategori;
+  document.getElementById('ua-tahun').textContent = tahun;
+  document.getElementById('ua-bulan').textContent = totalBulan;
+  document.getElementById('ua-hari').textContent = totalHari;
+  document.getElementById('ua-total').textContent = totalHari + ' hari';
+
+  // Show relevant milestone
+  const ms = getMilestone(totalBulan);
+  if (ms) {
+    document.getElementById('milestone-card').style.display = 'block';
+    document.getElementById('ms-subtitle').textContent = `Usia ${totalBulan} bulan — ${kategori}`;
+    document.getElementById('milestone-content').innerHTML = ms;
+  }
+}
+
+function getMilestone(bulan) {
+  const milestones = {
+    '0-2': { motorik:'Refleks hisap/menelan, menggerakkan kepala ke kiri-kanan, mengangkat kepala sebentar saat tengkurap', sosial:'Tersenyum saat melihat wajah, merespons suara keras', bahasa:'Menangis sebagai komunikasi, mendengkur', kognitif:'Mengikuti objek dengan mata, menatap wajah orang' },
+    '3-5': { motorik:'Tengkurap kepala tegak, menggenggam mainan, berguling', sosial:'Tertawa keras, mengenali wajah familiar, bermain cilukba', bahasa:'Berceloteh vokal (aaa, ooo), merespons nama', kognitif:'Meraih benda, menaruh benda ke mulut, tertarik cermin' },
+    '6-8': { motorik:'Duduk dengan bantuan, berdiri dengan pegangan, merangkak', sosial:'Takut orang asing (stranger anxiety), bermain tepuk tangan', bahasa:'Mengucapkan suku kata (ba-ba, ma-ma)', kognitif:'Mencari benda tersembunyi, memahami "tidak"' },
+    '9-11': { motorik:'Berdiri tanpa pegangan sebentar, berjalan merambat', sosial:'Melambai "da-da", bermain interaktif sederhana', bahasa:'1–3 kata bermakna (mama, papa, tidak)', kognitif:'Memahami perintah sederhana, memasukkan benda ke wadah' },
+    '12-17': { motorik:'Berjalan mandiri, naik tangga dengan bantuan, berlari', sosial:'Bermain paralel, menunjuk sesuatu yang diinginkan', bahasa:'5–10 kata, mulai menyatukan 2 kata', kognitif:'Bermain pura-pura, menggunakan sendok, mencoret-coret' },
+    '18-23': { motorik:'Berlari, menendang bola, menaiki tangga bergantian kaki', sosial:'Bermain bersama anak lain, menunjukkan empati', bahasa:'50+ kata, kalimat 2–3 kata', kognitif:'Menyortir bentuk & warna, bermain imajinatif' },
+    '24-35': { motorik:'Melompat, menggambar lingkaran, membuka botol', sosial:'Bermain kooperatif, mengenal aturan sederhana', bahasa:'Kalimat 4–6 kata, bertanya "mengapa"', kognitif:'Menghitung 1–10, mengenal warna, memahami konsep waktu' },
+    '36-59': { motorik:'Bersepeda roda 3, menulis huruf, menggunting', sosial:'Bermain peran kompleks, berteman, mandiri di toilet', bahasa:'Bercerita dengan urutan, mengenal huruf', kognitif:'Mengenal angka 1–20, konsep sebab-akibat, ingatan jangka panjang' }
+  };
+  let key = '';
+  if (bulan<=2) key='0-2'; else if (bulan<=5) key='3-5'; else if (bulan<=8) key='6-8'; else if (bulan<=11) key='9-11';
+  else if (bulan<=17) key='12-17'; else if (bulan<=23) key='18-23'; else if (bulan<=35) key='24-35'; else if (bulan<=59) key='36-59';
+  else return '<div class="dev-card"><div class="dev-age">≥60 bulan</div><div class="dev-title">Anak Usia Sekolah</div><div class="dev-list">Pantau perkembangan akademik, sosial, dan motorik secara berkala. Konsultasi ke dokter anak untuk asesmen tumbuh kembang.</div></div>';
+  const m = milestones[key];
+  if (!m) return null;
+  return `
+    <div class="dev-card"><div class="dev-age">🏃 Motorik</div><div class="dev-list">${m.motorik}</div></div>
+    <div class="dev-card" style="border-left-color:var(--oranye)"><div class="dev-age" style="color:var(--oranye)">😊 Sosial-Emosional</div><div class="dev-list">${m.sosial}</div></div>
+    <div class="dev-card" style="border-left-color:var(--biru)"><div class="dev-age" style="color:var(--biru)">💬 Bahasa & Komunikasi</div><div class="dev-list">${m.bahasa}</div></div>
+    <div class="dev-card" style="border-left-color:var(--ungu)"><div class="dev-age" style="color:var(--ungu)">🧠 Kognitif</div><div class="dev-list">${m.kognitif}</div></div>`;
+}
+
+// ===== STIMULASI =====
+const stimData = {
+  '0-3': '<strong>Stimulasi 0–3 Bulan:</strong><ul><li>Peluk & dekap bayi sesering mungkin — skin to skin</li><li>Ajak bicara, nyanyikan lagu dengan lembut</li><li>Gantung mainan berwarna cerah dalam jangkauan pandang</li><li>Tummy time 3–5 menit beberapa kali sehari</li><li>Perdengarkan berbagai bunyi & musik</li></ul>',
+  '4-6': '<strong>Stimulasi 4–6 Bulan:</strong><ul><li>Berikan mainan yang bisa dipegang dan dimasukkan ke mulut (aman)</li><li>Bermain cilukba, tirukan ekspresi wajah</li><li>Dudukkan bayi dengan penyangga</li><li>Ajak bayi melihat cermin</li><li>Beri mainan dengan bunyi berbeda</li></ul>',
+  '7-12': '<strong>Stimulasi 7–12 Bulan:</strong><ul><li>Dorong merangkak dengan meletakkan mainan di depannya</li><li>Ajak tepuk tangan, lambaikan tangan "da-da"</li><li>Bacakan buku bergambar sederhana setiap hari</li><li>Ajari memegang makanan sendiri (finger food)</li><li>Bermain susun balok, masukkan bola ke lubang</li></ul>',
+  '13-24': '<strong>Stimulasi 13–24 Bulan:</strong><ul><li>Beri kesempatan berjalan di berbagai permukaan</li><li>Banyak bicara, beri nama semua benda di sekitar</li><li>Bacakan buku setiap sebelum tidur</li><li>Dorong bermain pura-pura (masak-masakan sederhana)</li><li>Ajari menyebut nama anggota keluarga</li></ul>',
+  '25-36': '<strong>Stimulasi 25–36 Bulan:</strong><ul><li>Ajari mewarnai, menggambar bebas</li><li>Kenalkan angka & huruf melalui lagu</li><li>Biarkan bermain dengan anak lain</li><li>Ajari berpakaian & melepas sepatu sendiri</li><li>Cerita dongeng sebelum tidur setiap malam</li></ul>',
+  '37-60': '<strong>Stimulasi 37–60 Bulan:</strong><ul><li>Ajari menulis nama sendiri</li><li>Bermain peran (dokter-dokteran, masak-masakan)</li><li>Latih kemandirian: mandi, makan, berpakaian sendiri</li><li>Kenalkan lingkungan sosial (taman bermain, tetangga)</li><li>Stimulasi problem solving: puzzle, teka-teki sederhana</li></ul>'
+};
+function showStimulasi(key, btn) {
+  document.querySelectorAll('#stim-chips .chip').forEach(c=>c.className = 'chip');
+  btn.className = 'chip on';
+  document.getElementById('stim-content').innerHTML = stimData[key] || '';
+}
+
+// ===== TANDA BAHAYA BAYI =====
+const bahayaBayiData = {
+  neonatus: `
+    <div style="margin-bottom:10px;font-size:12px;font-weight:700;color:var(--merah)">🔴 Tanda Bahaya Neonatus (0–28 Hari)</div>
+    <ul class="ckl">
+      <li class="x"><strong>Tidak mau menyusu</strong> — tidak mau menghisap atau melepas payudara terus</li>
+      <li class="x"><strong>Gangguan napas</strong> — napas cepat (&gt;60x/mnt), lambat (&lt;30x/mnt), atau tidak teratur</li>
+      <li class="x"><strong>Hipotermia</strong> — suhu tubuh &lt;36°C, kulit terasa dingin, bayi letargis</li>
+      <li class="x"><strong>Hipertermia</strong> — suhu &gt;37.5°C pada neonatus = waspadai infeksi serius</li>
+      <li class="x"><strong>Ikterus (kuning) patologis</strong> — kuning muncul &lt;24 jam, meluas ke telapak tangan/kaki, atau menetap &gt;14 hari</li>
+      <li class="x"><strong>Kejang</strong> — gerakan abnormal berulang, mata mendelik, hentakan tangan/kaki</li>
+      <li class="x"><strong>Perdarahan tali pusat</strong> — tali pusat berdarah aktif atau berbau busuk dengan kemerahan</li>
+      <li class="x"><strong>Tanda infeksi tali pusat</strong> — merah, bengkak, keluar nanah, bau tidak sedap</li>
+      <li class="x"><strong>Muntah berulang / perut kembung</strong> — terutama bila disertai tidak BAB</li>
+      <li class="x"><strong>Tidak BAK &gt;24 jam</strong> atau tidak BAB dalam 48 jam pertama kehidupan</li>
+      <li class="x"><strong>Berat badan lahir rendah</strong> &lt;2500g atau penurunan BB &gt;10% dari BB lahir</li>
+      <li class="w"><strong>Bayi rewel tidak berhenti</strong> menangis walau sudah disusui & digendong</li>
+    </ul>`,
+  bayi: `
+    <div style="margin-bottom:10px;font-size:12px;font-weight:700;color:var(--merah)">🔴 Tanda Bahaya Bayi (1–12 Bulan)</div>
+    <ul class="ckl">
+      <li class="x"><strong>Demam tinggi</strong> — suhu &gt;38°C pada bayi &lt;3 bulan; &gt;39°C pada bayi 3–12 bulan</li>
+      <li class="x"><strong>Sesak napas / napas bunyi</strong> — stridor, mengi, retraksi dada, napas cuping hidung</li>
+      <li class="x"><strong>Tidak mau minum/menyusu</strong> selama &gt;6 jam</li>
+      <li class="x"><strong>Muntah proyektil</strong> — menyemprot kuat, terutama usia 2–8 minggu (pilorik stenosis)</li>
+      <li class="x"><strong>Diare cair</strong> ≥3× sehari disertai tanda dehidrasi (ubun-ubun cekung, mata cowong, mulut kering, air mata tidak keluar)</li>
+      <li class="x"><strong>Penurunan kesadaran</strong> — tidak merespons rangsang, sulit dibangunkan</li>
+      <li class="x"><strong>Ruam / bercak merah mendadak</strong> yang menyebar luas (waspadai campak, demam berdarah)</li>
+      <li class="x"><strong>Fontanel (ubun-ubun) membenjol & tegang</strong> — tanda peningkatan tekanan intrakranial</li>
+      <li class="x"><strong>Penurunan berat badan</strong> atau berat badan tidak naik 2 bulan berturut-turut</li>
+      <li class="w"><strong>Tidak ada kontak mata</strong> pada usia &gt;2 bulan — skrining gangguan penglihatan/autisme</li>
+      <li class="w"><strong>Belum bisa mengangkat kepala</strong> pada usia 4 bulan</li>
+    </ul>`,
+  balita: `
+    <div style="margin-bottom:10px;font-size:12px;font-weight:700;color:var(--merah)">🔴 Tanda Bahaya Balita (1–5 Tahun)</div>
+    <ul class="ckl">
+      <li class="x"><strong>Demam &gt;5 hari</strong> tanpa sebab jelas — waspadai DBD, tifoid, malaria</li>
+      <li class="x"><strong>Sesak napas</strong> atau napas cepat (&gt;40x/mnt) — kemungkinan pneumonia</li>
+      <li class="x"><strong>Kejang demam kompleks</strong> — &gt;15 menit, berulang, atau fokal</li>
+      <li class="x"><strong>Tidak sadar / sulit dibangunkan</strong> setelah kejang</li>
+      <li class="x"><strong>Tanda dehidrasi berat</strong> — tidak mau minum, mata sangat cowong, turgor kulit jelek</li>
+      <li class="x"><strong>Petekie / bintik merah tidak hilang</strong> ditekan — tanda perdarahan (DBD, ITP)</li>
+      <li class="x"><strong>Kaku kuduk</strong> (tidak bisa menekuk leher ke dada) — tanda meningitis</li>
+      <li class="x"><strong>Edema (bengkak)</strong> pada seluruh tubuh terutama muka dan kaki — waspadai sindrom nefrotik/gizi buruk kwashiorkor</li>
+      <li class="w"><strong>Belum bisa berjalan</strong> pada usia 18 bulan — evaluasi tumbuh kembang</li>
+      <li class="w"><strong>Belum bisa bicara 2 kata bermakna</strong> pada usia 2 tahun</li>
+      <li class="w"><strong>Kehilangan kemampuan</strong> yang sudah pernah dimiliki (regresi) — skrining segera</li>
+    </ul>`
+};
+function showBahayaBayi(key, btn) {
+  document.querySelectorAll('#bahaya-chips .chip').forEach(c => c.className = 'chip');
+  btn.className = 'chip on';
+  document.getElementById('bahaya-content').innerHTML = bahayaBayiData[key] || '';
+}
+
+
+const asuhData = {
+  asah: '<strong>ASAH — Stimulasi Mental & Intelektual:</strong><ul><li>Ajak anak bicara aktif sejak lahir — otak berkembang melalui bahasa</li><li>Bacakan buku bergambar setiap hari minimal 15 menit</li><li>Perkenalkan konsep angka, warna, bentuk melalui bermain</li><li>Batasi screen time: 0–18 bln = tidak ada layar; 2–5 thn = max 1 jam/hari</li><li>Ajak eksplorasi alam, taman, lingkungan sekitar</li><li>Jawab pertanyaan anak dengan sabar dan jujur</li></ul>',
+  asih: '<strong>ASIH — Kasih Sayang & Ikatan Emosional:</strong><ul><li>Berikan pelukan, ciuman, sentuhan kasih sayang setiap hari</li><li>Validasi perasaan anak: "Mama tahu kamu sedih, itu wajar"</li><li>Hindari hukuman fisik — gunakan konsekuensi alami</li><li>Luangkan "quality time" setiap hari tanpa gadget</li><li>Puji usaha anak, bukan hanya hasil: "Kamu sudah berusaha keras!"</li><li>Tumbuhkan rasa aman (secure attachment) sejak bayi</li></ul>',
+  asuh: '<strong>ASUH — Pemenuhan Kebutuhan Fisik:</strong><ul><li>ASI eksklusif 6 bulan, lanjutkan hingga 2 tahun + MPASI</li><li>Imunisasi lengkap sesuai jadwal (IDAI 2023)</li><li>Timbang & ukur tinggi rutin setiap bulan di posyandu</li><li>Jaga kebersihan: cuci tangan pakai sabun, potong kuku, sikat gigi</li><li>Tidur cukup: bayi 14–17 jam/hari, balita 11–14 jam/hari</li><li>Cegah kecelakaan: jauhkan benda berbahaya, pasang pengaman tangga</li></ul>'
+};
+function showAsuh(key, btn) {
+  document.querySelectorAll('#asuh-chips .chip').forEach(c=>c.className = 'chip');
+  btn.className = 'chip on';
+  document.getElementById('asuh-content').innerHTML = asuhData[key] || '';
+}
+
+// ===== GIZI =====
+function hitungGizi() {
+  const bb = parseFloat(document.getElementById('gz-bb').value);
+  const tb = parseFloat(document.getElementById('gz-tb').value);
+  const status = document.getElementById('gz-status').value;
+  const pal = parseFloat(document.getElementById('gz-pal').value);
+  if (!bb||!tb) { alert('Mohon isi berat badan dan tinggi badan.'); return; }
+  const tbm = tb/100;
+  const bmi = bb/(tbm*tbm);
+  const bmr = 655 + 9.6*bb + 1.8*tb - 4.7*28;
+  const tdee = bmr * pal;
+  const tbl = {'1':{k:180,p:1,fe:27,f:600,ca:1000,lbl:'Hamil Trimester 1'},'2':{k:300,p:10,fe:27,f:600,ca:1000,lbl:'Hamil Trimester 2'},'3':{k:300,p:31,fe:27,f:600,ca:1000,lbl:'Hamil Trimester 3'},'4':{k:500,p:19,fe:9,f:500,ca:1000,lbl:'Menyusui 0–6 bulan'},'5':{k:400,p:13,fe:10,f:500,ca:1000,lbl:'Menyusui 7–12 bulan'}};
+  const t = tbl[status];
+  const kal = Math.round(tdee+t.k);
+  const prot = Math.round(bb*1.1+t.p);
+  const bmiStatus = bmi<18.5?'Kurus (KEK)':bmi<25?'Normal':bmi<30?'Overweight':'Obesitas';
+  const kkTarget = bmi<18.5?'12.5–18 kg':bmi<25?'11.5–16 kg':bmi<30?'7–11.5 kg':'5–9 kg';
+  const el = document.getElementById('result-gizi');
+  el.className = 'rb rb-b show';
+  el.innerHTML = `<div class="rt" style="color:#1a5276">📊 Estimasi Kebutuhan Gizi — ${t.lbl}</div>
+    <div class="ig"><div class="ii"><div class="il">Total Energi</div><div class="iv big">${kal} kkal</div></div><div class="ii"><div class="il">Protein</div><div class="iv big">${prot} g</div></div><div class="ii"><div class="il">Zat Besi (Fe)</div><div class="iv">${t.fe} mg</div></div><div class="ii"><div class="il">Asam Folat</div><div class="iv">${t.f} mcg</div></div><div class="ii"><div class="il">Kalsium</div><div class="iv">${t.ca} mg</div></div><div class="ii"><div class="il">BMI Pra-hamil</div><div class="iv">${bmi.toFixed(1)} — ${bmiStatus}</div></div></div>
+    <div style="margin-top:10px;font-size:12px;color:var(--medium)"><strong>Target Kenaikan BB:</strong> ${kkTarget}<br><em style="font-size:11px;color:var(--muted)">*Berdasarkan AKG 2019 Kemenkes RI. Konsultasi ahli gizi untuk rencana individual.</em></div>`;
+}
+
+// ===== GIZI MENYUSUI =====
+const menyusuiData = {
+  kunci: '<strong>Nutrisi Kunci Ibu Menyusui:</strong><ul><li><strong>Kalori tambahan 400–500 kkal/hari</strong> di atas kebutuhan normal</li><li><strong>Protein:</strong> +25g/hari — telur, ikan, ayam, tempe, tahu</li><li><strong>Kalsium 1000mg:</strong> susu, yogurt, ikan teri, brokoli</li><li><strong>Vitamin D:</strong> paparan sinar matahari pagi 15–30 mnt</li><li><strong>Omega-3 DHA:</strong> ikan salmon, sarden, kembung min 2x/minggu</li><li><strong>Zat Besi 9mg:</strong> hati ayam, daging merah, bayam + vitamin C</li><li><strong>Yodium:</strong> garam beryodium, rumput laut, ikan laut</li></ul>',
+  booster: '<strong>Makanan Booster Produksi ASI (Galaktagog):</strong><ul><li>🌾 <strong>Daun katuk</strong> — sayuran galaktagog terbaik, tumis atau direbus</li><li>🫚 <strong>Daun kelor</strong> — kaya nutrisi, tinggi kalsium & zat besi</li><li>🥜 <strong>Kacang-kacangan</strong> — kacang hijau, edamame, almond</li><li>🌿 <strong>Jahe & kunyit</strong> — campuran dalam minuman hangat</li><li>🌾 <strong>Oatmeal</strong> — sarapan kaya serat & beta-glukan</li><li>🥥 <strong>Santan / kelapa muda</strong> — lemak sehat pendukung ASI</li><li>🐟 <strong>Ikan gabus</strong> — protein tinggi, dipercaya meningkatkan ASI</li></ul>',
+  hindari: '<strong>Yang Dihindari Ibu Menyusui:</strong><ul><li>❌ Rokok — nikotin masuk ASI, menurunkan produksi</li><li>❌ Alkohol — masuk ASI, berbahaya bagi bayi</li><li>❌ Kafein berlebihan — max 200mg/hari (±2 cangkir kopi)</li><li>❌ Ikan tinggi merkuri — tuna besar, hiu, todak</li><li>❌ Diet ketat / puasa — dapat menurunkan produksi ASI</li><li>⚠️ Makanan pedas/gas — boleh tapi perhatikan reaksi bayi (kolik)</li><li>⚠️ Jamu tanpa rekomendasi dokter/bidan</li></ul>',
+  minum: '<strong>Kebutuhan Cairan Ibu Menyusui:</strong><ul><li><strong>Minimal 3 liter (12–13 gelas) per hari</strong></li><li>Minum segelas air setiap kali menyusui bayi</li><li>Urin berwarna kuning jernih = tanda cukup cairan</li><li>Tanda kekurangan cairan: urin kuning gelap, sakit kepala, ASI berkurang</li><li>Sumber cairan: air putih, susu, jus buah, kuah sayur, sup</li><li>Hindari minuman manis berlebihan & minuman soda</li></ul>'
+};
+function showGiziMenyusui(key, btn) {
+  document.querySelectorAll('#menyusui-chips .chip').forEach(c=>c.className = 'chip');
+  btn.className = 'chip on';
+  document.getElementById('menyusui-content').innerHTML = menyusuiData[key] || '';
+}
+
+// ===== PANDUAN MAKAN =====
+const makanData = {
+  karbo: '<strong>Karbohidrat Kompleks — Energi Utama:</strong><ul><li>Nasi: 3–4 porsi/hari (1 porsi = 100g nasi matang)</li><li>Ubi, kentang, singkong: variasi sumber karbohidrat lokal</li><li>Roti gandum/oatmeal untuk sarapan bergizi</li><li>Hindari minuman manis, kue, & tepung olahan berlebihan</li></ul>',
+  protein: '<strong>Protein Hewani & Nabati — Pertumbuhan Janin:</strong><ul><li>Telur: 1–2 butir/hari (protein lengkap)</li><li>Ikan: 3–4x/minggu, min 80g/porsi</li><li>Daging sapi/ayam: 60–80g/porsi, 3–4x/minggu</li><li>Tempe/Tahu: 2–3 porsi/hari (isoflavon & protein nabati)</li><li>Kacang-kacangan: camilan bergizi</li></ul>',
+  lemak: '<strong>Lemak Sehat — Perkembangan Otak Janin:</strong><ul><li>Alpukat: ½–1 buah/hari (omega-3, vitamin E)</li><li>Kacang almond/kenari: 30g/hari</li><li>Minyak zaitun / minyak kelapa untuk memasak</li><li>Ikan salmon/sarden/kembung: sumber DHA tinggi</li><li>Hindari makanan digoreng berlebihan & lemak trans</li></ul>',
+  mineral: '<strong>Mineral Penting Kehamilan:</strong><ul><li><strong>Zat Besi (27mg):</strong> hati ayam, daging merah, bayam + vitamin C</li><li><strong>Kalsium (1000mg):</strong> susu, yogurt, ikan teri, brokoli</li><li><strong>Asam Folat (600mcg):</strong> sayuran hijau, kacang merah, jeruk</li><li><strong>Zinc:</strong> daging, biji labu, kacang mete</li><li><strong>Iodium:</strong> garam beryodium, ikan laut (penting untuk tiroid janin)</li></ul>'
+};
+function showMakan(key, btn) {
+  document.querySelectorAll('#makan-chips .chip').forEach(c=>c.className = 'chip');
+  btn.className = 'chip on';
+  document.getElementById('makan-content').innerHTML = makanData[key] || '';
+}
+
+// ===== ANEMIA =====
+function nilaiAnemia() {
+  const hb = parseFloat(document.getElementById('hb-val').value);
+  if (!hb) { alert('Masukkan nilai Hb'); return; }
+  let title, desc, action, cls;
+  if (hb >= 11) { title='🟢 Normal'; cls='rb-g'; desc=`Hb ${hb} g/dL — normal (≥11 g/dL). Pertahankan asupan zat besi.`; action='<ul><li>Lanjutkan tablet Fe 60mg/hari</li><li>Konsumsi makanan sumber zat besi</li><li>Hindari teh/kopi 1 jam sebelum/sesudah makan</li></ul>'; }
+  else if (hb >= 8) { title='🟡 Anemia Ringan–Sedang'; cls='rb-y'; desc=`Hb ${hb} g/dL — anemia ringan-sedang. Perlu terapi Fe intensif.`; action='<ul><li>Fe 2×60mg/hari + vitamin C</li><li>Periksa ferritin jika memungkinkan</li><li>Evaluasi ulang Hb setelah 4 minggu</li><li>Konsultasi dokter jika tidak respons</li></ul>'; }
+  else { title='🔴 Anemia Berat'; cls='rb-r'; desc=`Hb ${hb} g/dL — anemia berat. Risiko tinggi perdarahan postpartum, BBLR, kematian.`; action='<ul><li><strong>RUJUK ke RS</strong> untuk evaluasi lanjut</li><li>Pertimbangkan transfusi/Fe IV</li><li>Pantau DJJ & kesejahteraan janin</li><li>Persiapkan persalinan di RS</li></ul>'; }
+  showRb('result-hb', cls, title, desc, action);
+}
+
+// ===== KB =====
+function rekomendasiKB() {
+  const umur = parseFloat(document.getElementById('kb-umur').value)||25;
+  const anak = parseFloat(document.getElementById('kb-anak').value)||0;
+  const laktasi = document.getElementById('kb-laktasi').value;
+  const penyakit = document.getElementById('kb-penyakit').value;
+  const tujuan = document.getElementById('kb-tujuan').value;
+  let rekom=[], catatan='';
+  if (tujuan==='stop') { rekom=['✅ MOW (Tubektomi) — definitif, >99.5%','✅ MOP (Vasektomi suami) — lebih sederhana']; }
+  else if (laktasi==='menyusui') { rekom=['✅ MAL — hingga 6 bulan','✅ Pil Progestin Only (Mini Pil)','✅ Suntik DMPA 3 bulan','✅ Implan — 3–5 tahun']; catatan='⚠️ Hindari kontrasepsi kombinasi estrogen-progestin saat menyusui <6 bulan.'; }
+  else if (penyakit==='hipertensi') { rekom=['✅ IUD / AKDR','✅ Implan (Progestin)','✅ Suntik Progestin','❌ Pil Kombinasi — kontraindikasi']; catatan='⚠️ Estrogen kontraindikasi pada hipertensi berat.'; }
+  else if (penyakit==='varises') { rekom=['✅ IUD / AKDR','✅ Implan Progestin','⚠️ Pil Kombinasi — hati-hati (risiko DVT)']; }
+  else if (tujuan==='tunda' && anak===0) { rekom=['✅ Pil Kombinasi','✅ Suntik 1 bulan','✅ Kondom']; }
+  else { rekom=['✅ IUD / AKDR — MKJP terbaik, 5–10 tahun','✅ Implan — 3–5 tahun','✅ Suntik DMPA 3 bulan','✅ Pil Kombinasi']; }
+  const el = document.getElementById('result-kb');
+  el.className = 'rb rb-b show';
+  el.innerHTML = `<div class="rt" style="color:#1a5276">💡 Rekomendasi Kontrasepsi</div>
+    <ul style="padding-left:14px;margin-bottom:8px">${rekom.map(r=>`<li style="margin-bottom:5px;font-size:12px">${r}</li>`).join('')}</ul>
+    ${catatan?`<div style="background:#fdecea;border-radius:6px;padding:8px 10px;font-size:11px;color:#7b241c">${catatan}</div>`:''}
+    <p style="font-size:11px;color:var(--muted);margin-top:6px">*Panduan awal. Keputusan akhir melalui konseling bidan/dokter & informed consent.</p>`;
+}
+
+// ===== EPDS =====
+function hitungEPDS() {
+  let total = 0;
+  document.querySelectorAll('.epds-q').forEach(s => total += parseInt(s.value));
+  const q10 = parseInt(document.getElementById('epds-q10').value);
+  let title, desc, action, cls;
+  if (q10>=1) { title='🔴 PERHATIAN — Pikiran Menyakiti Diri'; cls='rb-r'; desc=`Skor ${total}/30. Ada pikiran menyakiti diri sendiri — perlu perhatian SEGERA.`; action='<ul><li>Jangan tinggalkan ibu sendirian</li><li>Rujuk ke psikiater/psikolog klinis</li><li>Informasikan keluarga suportif</li><li>Hotline kesehatan jiwa: 119 ext 8</li></ul>'; }
+  else if (total>=13) { title='🔴 Kemungkinan Depresi'; cls='rb-r'; desc=`Skor ${total}/30 — indikasi depresi antenatal. Perlu evaluasi profesional.`; action='<ul><li>Rujuk ke psikolog/psikiater</li><li>Sampaikan dengan empati</li><li>Libatkan dukungan keluarga</li><li>Kunjungan tindak lanjut lebih sering</li></ul>'; }
+  else if (total>=10) { title='🟡 Risiko Sedang'; cls='rb-y'; desc=`Skor ${total}/30 — risiko sedang. Perlu pemantauan & dukungan aktif.`; action='<ul><li>Konseling dukungan emosional</li><li>Edukasi suami/keluarga</li><li>Ulangi EPDS kunjungan berikutnya</li></ul>'; }
+  else { title='🟢 Risiko Rendah'; cls='rb-g'; desc=`Skor ${total}/30 — tidak ada indikasi depresi bermakna.`; action='<ul><li>Edukasi tanda depresi perinatal</li><li>Anjurkan terbuka ke bidan jika ada perubahan perasaan</li></ul>'; }
+  showRb('result-epds', cls, title, desc, action);
+}
+
+// ===== KDRT =====
+function nilaiKDRT() {
+  let pos = 0;
+  document.querySelectorAll('.kdrt-q').forEach(s => { if(parseInt(s.value)===1) pos++; });
+  let title, desc, action, cls;
+  if (pos===0) { title='🟢 Tidak Ada Indikasi KDRT'; cls='rb-g'; desc='Tidak ditemukan indikasi KDRT. Tetap ciptakan lingkungan aman untuk melapor.'; action='<ul><li>Edukasi hak-hak ibu</li><li>Informasikan layanan P2TP2A jika diperlukan</li></ul>'; }
+  else if (pos===1) { title='🟡 Perlu Eksplorasi Lebih Lanjut'; cls='rb-y'; desc='Ada 1 indikasi yang perlu digali lebih dalam dengan empati dan privasi.'; action='<ul><li>Lanjutkan percakapan dalam setting privat</li><li>Pastikan keamanan ibu & janin</li><li>Informasikan P2TP2A Jabar</li></ul>'; }
+  else { title='🔴 Indikasi KDRT — Tindakan Perlindungan Diperlukan'; cls='rb-r'; desc=`Ditemukan ${pos} indikasi KDRT. Keselamatan ibu & janin adalah prioritas.`; action='<ul><li>Pastikan ibu aman saat ini</li><li>Rujuk ke P2TP2A Jabar: (022) 7272892</li><li>Buat rencana keselamatan bersama ibu</li><li>Hotline Kemensos: 1500-454</li></ul>'; }
+  showRb('result-kdrt', cls, title, desc, action);
+}
+
+// ===== KEGAWATAN =====
+const kegData = {
+  pph: '<strong>🩸 Perdarahan Postpartum (PPH)</strong><br>Kehilangan darah ≥500mL (pervaginam) / ≥1000mL (SC) dalam 24 jam pertama.<br><br><strong>Tata laksana HAEMOSTASIS:</strong><ul><li><strong>H</strong> — Help: panggil bantuan segera</li><li><strong>A</strong> — Assess & Resuscitate: IV line 2 jalur</li><li><strong>E</strong> — Establish etiology (4T: Tone, Tissue, Trauma, Thrombin)</li><li><strong>M</strong> — Massage uterus bimanual</li><li><strong>O</strong> — Oxytocin 20-40 IU/500mL NaCl</li><li><strong>S</strong> — Shift ke RS jika tidak respons</li><li><strong>T, A, S, I, S</strong> — Tamponade, Asam Traneksamat, Surgical, Inform, Summary</li></ul>',
+  eklamsia: '<strong>⚡ Eklampsia</strong><br>Kejang tonik-klonik pada ibu dengan PE.<br><br><strong>Tata laksana:</strong><ul><li>Bebaskan jalan napas, miringkan ke kiri</li><li>O2 4–6 L/menit via masker</li><li>MgSO4 4g IV loading dalam 15–20 menit</li><li>Antihipertensi: Nifedipin 10mg oral / Labetalol IV</li><li>Pasang kateter — pantau diuresis</li><li>RUJUK segera ke RS PONEK setelah stabilisasi</li></ul>',
+  sepsis: '<strong>🦠 Sepsis Obstetri</strong><br>Respons tubuh terhadap infeksi mengancam jiwa (qSOFA ≥2).<br><br><strong>Tanda & Tata laksana:</strong><ul><li>Demam >38°C / hipotermia <36°C</li><li>Takikardi >100x/mnt, napas >20x/mnt</li><li>Lokhia berbau, uterus nyeri tekan</li><li>Antibiotik broad-spectrum SEGERA</li><li>Resusitasi cairan IV agresif</li><li>RUJUK ke RS dengan ICU obstetri</li></ul>',
+  abortus: '<strong>🌿 Abortus</strong><br>Pengeluaran hasil konsepsi <20 minggu.<br><br><strong>Klasifikasi & Penanganan:</strong><ul><li><strong>Imminens:</strong> istirahat, progesteron, observasi</li><li><strong>Insipiens:</strong> evakuasi segera (MVA) — rujuk RS</li><li><strong>Inkomplit:</strong> oksitosin + evakuasi — rujuk RS</li><li><strong>Komplit:</strong> observasi, pastikan uterus kosong</li><li>Semua kasus: IV line, cegah syok, Rh imunoglobulin jika Rh(–)</li></ul>',
+  emboli: '<strong>💨 Emboli Air Ketuban (AFE)</strong><br>Kondisi paling mematikan — kematian 60–80%.<br><br><strong>Tanda & Penanganan:</strong><ul><li>Onset tiba-tiba: sesak napas, kolaps kardiovaskular, koagulopati</li><li>Tidak ada terapi spesifik — supportif</li><li>CPR segera jika henti jantung</li><li>O2 100%, intubasi jika perlu</li><li>Atasi koagulopati (FFP, trombosit)</li><li><strong>PANGGIL BANTUAN SEGERA — kegawatan tim</strong></li></ul>'
+};
+function showKegawatan(key, btn) {
+  document.querySelectorAll('#keg-chips .chip').forEach(c=>c.className = 'chip');
+  btn.className = 'chip on';
+  document.getElementById('keg-content').innerHTML = kegData[key] || '';
+}
+
+// ===== HELPER =====
+function showRb(id, cls, title, desc, action) {
+  const el = document.getElementById(id);
+  el.className = `rb ${cls} show`;
+  el.innerHTML = `<div class="rt">${title}</div><div class="rd">${desc}</div>${action?`<div class="ra"><strong>Tindak lanjut:</strong><ul>${action.replace('<ul>','').replace('</ul>','').split('<li>').filter(s=>s.trim()).map(s=>`<li>${s.replace('</li>','')}</li>`).join('')}</ul></div>`:''}`;
+}
+
+// ===== INIT =====
+// INIT
+
+// INISIALISASI
+window.onload = function() {
+  var chips = {
+    '#keg-chips': function(c){ showKegawatan('pph', c); },
+    '#stim-chips': function(c){ showStimulasi('0-3', c); },
+    '#asuh-chips': function(c){ showAsuh('asah', c); },
+    '#menyusui-chips': function(c){ showGiziMenyusui('kunci', c); },
+    '#makan-chips': function(c){ showMakan('karbo', c); },
+    '#bahaya-chips': function(c){ showBahayaBayi('neonatus', c); }
+  };
+  for (var sel in chips) {
+    var el = document.querySelector(sel + ' .chip');
+    if (el) chips[sel](el);
+  }
+  var today = new Date().toISOString().split('T')[0];
+  var hpht = document.getElementById('hpht-tgl');
+  var tl = document.getElementById('tl-anak');
+  if (hpht) hpht.max = today;
+  if (tl) tl.max = today;
+};
+</script>
+</body>
+</html>
